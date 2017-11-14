@@ -9,5 +9,8 @@ endfunction
 
 call remote#host#Register('aoj.nvim', '0', function('s:RequireAOJ'))
 call remote#host#RegisterPlugin('aoj.nvim', '0', [
-  \ {'type': 'command', 'name': 'AojSubmit', 'sync': 1, 'opts': {'nargs': '*'}},
+  \ {'type': 'command', 'name': 'AojSubmit',  'sync': 1, 'opts': {'nargs': '*'}},
+  \ {'type': 'command', 'name': 'AojSession', 'sync': 1, 'opts': {'nargs': '*'}},
+  \ {'type': 'command', 'name': 'AojSelf',    'sync': 1},
+  \ {'type': 'command', 'name': 'AojStatus',  'sync': 1},
   \ ])
