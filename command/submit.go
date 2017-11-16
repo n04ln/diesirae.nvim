@@ -25,7 +25,7 @@ func (a *AOJ) Submit(v *nvim.Nvim, args []string) error {
 	v.Command("echom '" + a.Config.ID + "'")
 	v.Command("echom '" + a.Config.Endpoint + "'")
 
-	token, err := aoj.Submit(problemId, language, sourceCode)
+	token, err := aoj.Submit(a.Cookie, problemId, language, sourceCode)
 	if err != nil {
 		return err
 	}

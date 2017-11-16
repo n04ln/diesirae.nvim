@@ -1,0 +1,59 @@
+hash: 00e1c9987dcd0a540b01155cb86f31931f97eebfcf6d41acbb218622b898c82a
+updated: 2017-11-16T11:15:52.944258646+09:00
+imports:
+- name: github.com/h2non/gentleman
+  version: e0f81be2f4064ea7aa7470e9daddd2dc8e8152c7
+  subpackages:
+  - plugins/body
+- name: github.com/kelseyhightower/envconfig
+  version: 462fda1f11d8cad3660e52737b8beefd27acfb3f
+- name: github.com/neovim/go-client
+  version: 41046447d68e201c1988a66b665ab8a41536c028
+  subpackages:
+  - msgpack
+  - msgpack/rpc
+  - nvim
+  - nvim/plugin
+- name: golang.org/x/net
+  version: 9dfe39835686865bff950a07b394c12a98ddc811
+  subpackages:
+  - publicsuffix
+- name: gopkg.in/h2non/gentleman.v2
+  version: e0f81be2f4064ea7aa7470e9daddd2dc8e8152c7
+  subpackages:
+  - context
+  - middleware
+  - mux
+  - plugin
+  - plugins/body
+  - plugins/bodytype
+  - plugins/cookies
+  - plugins/headers
+  - plugins/multipart
+  - plugins/query
+  - plugins/url
+  - utils
+testImports:
+- name: github.com/davecgh/go-spew
+  version: 04cdfd42973bb9c8589fd6a731800cf222fde1a9
+  subpackages:
+  - spew
+- name: github.com/k0kubun/pp
+  version: e057ee7a28277be4d2af303443b6da377768181f
+- name: github.com/mattn/go-colorable
+  version: 6fcc0c1fd9b620311d821b106a400b35dc95c497
+- name: github.com/mattn/go-isatty
+  version: 6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib
+- name: github.com/stretchr/testify
+  version: 2aa2c176b9dab406a6970f6a55f513e8a8c8b18f
+  subpackages:
+  - assert
+  - require
+- name: golang.org/x/sys
+  version: bf42f188b9bc6f2cf5b8ee5a912ef1aedd0eba4c
+  subpackages:
+  - unix
