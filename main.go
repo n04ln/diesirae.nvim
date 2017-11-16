@@ -11,7 +11,7 @@ func main() {
 		panic("cannot use session")
 	}
 	plugin.Main(func(p *plugin.Plugin) error {
-		p.HandleCommand(&plugin.CommandOptions{Name: "AojSubmit", NArgs: "*"}, a.Submit)
+		p.HandleCommand(&plugin.CommandOptions{Name: "AojSubmit", NArgs: "+"}, a.Submit)
 		return nil
 	})
 }
