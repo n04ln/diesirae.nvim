@@ -1,21 +1,32 @@
 package command
 
 import (
-	"github.com/NoahOrberg/aoj.nvim/util"
+	"github.com/NoahOrberg/aoj.nvim/config"
+	"github.com/h2non/gentleman"
 	"github.com/neovim/go-client/nvim"
 )
 
-func (a *AOJ) Session(v *nvim.Nvim, args []string) error {
-	// TODO: 引数で、ユーザ名、パスワードをもらって、セッションを得る
+// NOTE: セッションが生きているかどうかの確認
+func (a *AOJ) Self(v *nvim.Nvim, args []string) error {
+	conf := config.GetConfig()
 
-	if len(args) != 2 {
-		return util.ErrInvalidArgs
+	cli := gentleman.New()
+	cli.URL(conf.Endpoint)
+
+	req := cli.Request()
+	req.Method("GET")
+	req.Path("/self")
+	req.SetHeader("Cookie", a.Cookie)
+
+	res, err := req.Send()
+	if err != nil {
+		return err
+	}
+	if !res.Ok {
+		v.Command("echom 'session not exists'")
+		return nil
 	}
 
-	return nil
-}
-
-func (a *AOJ) Self(v *nvim.Nvim, args []string) error {
-	// TODO: セッションが生きているかどうかの確認
+	v.Command("echom 'session exists'")
 	return nil
 }

@@ -1,36 +1,92 @@
 package command
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/NoahOrberg/aoj.nvim/aoj"
 	"github.com/NoahOrberg/aoj.nvim/util"
 	"github.com/neovim/go-client/nvim"
 )
 
+// NOTE: Exコマンドの第一引数で問題のタイトルを指定する。
 func (a *AOJ) Submit(v *nvim.Nvim, args []string) error {
-	// NOTE: args[0] -> problem id
-	//       args[1] -> language
-	//       args[2] -> ...
-	// TODO: 提出用コマンド: CurrentBufferを、現在のファイルタイプから見て投げる(その場合上のlanguageいらなくなる)
-
-	v.Command("echo '" + a.Cookie + "'")
-
-	if len(args) != 2 {
+	if len(args) != 1 {
 		return util.ErrInvalidArgs
 	}
 
-	problemId := "ITP1_1_A"
-	language := "C"
-	sourceCode := "#include \nint main(){\n printf(\"Hello World\\n\");\n return 0;\n}"
+	v.Command("echom '1'")
 
-	v.Command("echom '" + a.Config.ID + "'")
-	v.Command("echom '" + a.Config.Endpoint + "'")
+	problemId := args[0]
+	buf, err := v.CurrentBuffer()
+	if err != nil {
+		return err
+	}
+	v.Command("echom '2'")
+	bufferName, err := v.BufferName(buf)
+	if err != nil {
+		return err
+	}
+	v.Command("echom '2'")
+	dotName := strings.Split(bufferName, ".")[len(strings.Split(bufferName, "."))-1]
+	var language string
+	switch dotName {
+	case "c":
+		language = "C"
+	default:
+		return fmt.Errorf("cannot submit this file: .%s", dotName)
+	}
+
+	sourceCode, err := getContentFromBuffer(v, buf)
+	if err != nil {
+		return err
+	}
+	v.Command("echom '3'")
 
 	token, err := aoj.Submit(a.Cookie, problemId, language, sourceCode)
 	if err != nil {
 		return err
 	}
+	v.Command("echom '4'")
 
-	v.Command("echo '" + token + "'")
+	res, err := aoj.Status(a.Cookie, token)
+	if err != nil {
+		return err
+	}
+	v.Command("echom '5'")
+
+	mes, err := checkAC(res)
+	if err != nil {
+		return err
+	}
+	v.Command("echom '5'")
+	v.Command("echom '" + mes + "'")
 
 	return nil
+}
+
+func checkAC(res *aoj.SubmissionStatus) (string, error) {
+	for _, caseVerdict := range res.CaseVerdicts {
+		if caseVerdict.Status != "AC" {
+			return fmt.Sprintf("testcase %s: %s", caseVerdict.Label, caseVerdict.Status), nil
+		}
+	}
+	return fmt.Sprintf("All case: AC"), nil
+}
+
+func getContentFromBuffer(v *nvim.Nvim, buf nvim.Buffer) (string, error) {
+	lines, err := v.BufferLines(buf, 0, -1, true)
+	if err != nil {
+		return "", err
+	}
+
+	var content string
+	for i, c := range lines {
+		content += string(c)
+		if i < len(lines)-1 {
+			content += "\n"
+		}
+	}
+
+	return content, nil
 }
