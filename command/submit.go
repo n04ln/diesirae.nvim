@@ -2,7 +2,6 @@ package command
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/NoahOrberg/aoj.nvim/aoj"
 	"github.com/NoahOrberg/aoj.nvim/nvimutil"
@@ -19,21 +18,15 @@ func (a *AOJ) Submit(v *nvim.Nvim, args []string) error {
 	nvimutil := nvimutil.New(v)
 
 	problemId := args[0]
+
+	language, err := nvimutil.CurrentBufferFileType()
+	if err != nil {
+		return err
+	}
+
 	buf, err := v.CurrentBuffer()
 	if err != nil {
 		return err
-	}
-	bufferName, err := v.BufferName(buf)
-	if err != nil {
-		return err
-	}
-	dotName := strings.Split(bufferName, ".")[len(strings.Split(bufferName, "."))-1]
-	var language string
-	switch dotName {
-	case "c":
-		language = "C"
-	default:
-		return fmt.Errorf("cannot submit this file: .%s", dotName)
 	}
 
 	sourceCode, err := getContentFromBuffer(v, buf)
