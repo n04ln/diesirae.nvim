@@ -7,6 +7,7 @@ import (
 	"github.com/neovim/go-client/nvim"
 )
 
+// 既に提出したバッファであれば、その一番最近の結果を返す
 func (a *AOJ) Status(v *nvim.Nvim, args []string) error {
 	buf, err := v.CurrentBuffer()
 	if err != nil {

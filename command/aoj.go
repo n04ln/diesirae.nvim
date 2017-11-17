@@ -34,7 +34,8 @@ func NewAOJ() (*AOJ, error) {
 	}
 
 	return &AOJ{
-		Cookie: cookie,
-		Config: conf,
+		Cookie:            cookie,
+		Config:            conf,
+		SubmittedStatuses: map[nvim.Buffer]([]*aoj.SubmissionStatus){},
 	}, nil
 }
