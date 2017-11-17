@@ -1,8 +1,6 @@
 package command
 
 import (
-	"fmt"
-
 	"github.com/NoahOrberg/aoj.nvim/aoj"
 	"github.com/NoahOrberg/aoj.nvim/nvimutil"
 	"github.com/NoahOrberg/aoj.nvim/util"
@@ -24,12 +22,7 @@ func (a *AOJ) Submit(v *nvim.Nvim, args []string) error {
 		return err
 	}
 
-	buf, err := v.CurrentBuffer()
-	if err != nil {
-		return err
-	}
-
-	sourceCode, err := getContentFromBuffer(v, buf)
+	sourceCode, err := nvimutil.GetContentFromCurrentBuffer()
 	if err != nil {
 		return err
 	}
@@ -44,37 +37,11 @@ func (a *AOJ) Submit(v *nvim.Nvim, args []string) error {
 		return err
 	}
 
-	mes, err := checkAC(res)
+	mes, err := res.CheckAC()
 	if err != nil {
 		return err
 	}
 	nvimutil.Log(mes)
 
 	return nil
-}
-
-func checkAC(res *aoj.SubmissionStatus) (string, error) {
-	for _, caseVerdict := range res.CaseVerdicts {
-		if caseVerdict.Status != "AC" {
-			return fmt.Sprintf("testcase %s: %s", caseVerdict.Label, caseVerdict.Status), nil
-		}
-	}
-	return fmt.Sprintf("All case: AC"), nil
-}
-
-func getContentFromBuffer(v *nvim.Nvim, buf nvim.Buffer) (string, error) {
-	lines, err := v.BufferLines(buf, 0, -1, true)
-	if err != nil {
-		return "", err
-	}
-
-	var content string
-	for i, c := range lines {
-		content += string(c)
-		if i < len(lines)-1 {
-			content += "\n"
-		}
-	}
-
-	return content, nil
 }

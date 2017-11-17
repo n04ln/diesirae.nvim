@@ -46,3 +46,42 @@ func (n *Nvimutil) CurrentBufferFileType() (string, error) {
 
 	return language, nil
 }
+
+func (n *Nvimutil) GetContentFromCurrentBuffer() (string, error) {
+	buf, err := n.v.CurrentBuffer()
+	if err != nil {
+		return "", err
+	}
+
+	lines, err := n.v.BufferLines(buf, 0, -1, true)
+	if err != nil {
+		return "", err
+	}
+
+	var content string
+	for i, c := range lines {
+		content += string(c)
+		if i < len(lines)-1 {
+			content += "\n"
+		}
+	}
+
+	return content, nil
+}
+
+func (n *Nvimutil) GetContentFromBuffer(buf nvim.Buffer) (string, error) {
+	lines, err := n.v.BufferLines(buf, 0, -1, true)
+	if err != nil {
+		return "", err
+	}
+
+	var content string
+	for i, c := range lines {
+		content += string(c)
+		if i < len(lines)-1 {
+			content += "\n"
+		}
+	}
+
+	return content, nil
+}
