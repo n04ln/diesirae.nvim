@@ -41,6 +41,9 @@ func (n *Nvimutil) CurrentBufferFileType() (string, error) {
 	case "hs": // NOTE: maybe not correct return "Haskell"? need fix
 		language = "Haskell"
 	default:
+		if dotName == "" {
+			return "", fmt.Errorf("cannot identify file type")
+		}
 		return "", fmt.Errorf("cannot submit this file: .%s", dotName)
 	}
 
