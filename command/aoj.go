@@ -22,7 +22,7 @@ func (a *AOJ) GetRecentStatusByBuffer(buf nvim.Buffer) (*aoj.SubmissionStatus, b
 		return nil, false
 	}
 
-	return stats[0], true
+	return stats[len(stats)-1], true
 }
 
 func NewAOJ() (*AOJ, error) {
