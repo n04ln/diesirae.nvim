@@ -8,7 +8,7 @@ import (
 )
 
 // Exコマンドの第一引数で問題のタイトルを指定する。
-func (a *AOJ) Submit(v *nvim.Nvim, args []string) error {
+func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	if len(args) != 1 {
 		return util.ErrInvalidArgs
 	}
