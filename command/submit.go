@@ -32,15 +32,23 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 		return err
 	}
 
-	res, err := aoj.Status(a.Cookie, token)
+	stat, err := aoj.Status(a.Cookie, token)
 	if err != nil {
 		return err
 	}
 
-	mes, err := res.CheckAC()
+	mes, err := stat.CheckAC()
 	if err != nil {
 		return err
 	}
+
+	buf, err := v.CurrentBuffer()
+	if err != nil {
+		return err
+	}
+
+	a.SetStatusByBuffer(buf, stat)
+
 	nvimutil.Log(mes)
 
 	return nil

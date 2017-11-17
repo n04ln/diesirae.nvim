@@ -1,9 +1,31 @@
 package command
 
-import "github.com/neovim/go-client/nvim"
+import (
+	"errors"
+
+	"github.com/NoahOrberg/aoj.nvim/nvimutil"
+	"github.com/neovim/go-client/nvim"
+)
 
 func (a *AOJ) Status(v *nvim.Nvim, args []string) error {
-	// TODO: 提出情報から、CurrentBufferのTokenを抜き、それがACかWAかなど見る。
-	// NOTE: 提出情報はa.SubmittedTokensに格納するようにする。詳しい情報などを見るために、WEBページのリンクも載せる
+	buf, err := v.CurrentBuffer()
+	if err != nil {
+		return err
+	}
+
+	stat, ok := a.GetRecentStatusByBuffer(buf)
+	if !ok {
+		return errors.New("not submited this buffer yet")
+	}
+
+	mes, err := stat.CheckAC()
+	if err != nil {
+		return err
+	}
+
+	nvimutil := nvimutil.New(v)
+
+	nvimutil.Log(mes)
+
 	return nil
 }
