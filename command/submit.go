@@ -5,29 +5,26 @@ import (
 	"strings"
 
 	"github.com/NoahOrberg/aoj.nvim/aoj"
+	"github.com/NoahOrberg/aoj.nvim/nvimutil"
 	"github.com/NoahOrberg/aoj.nvim/util"
 	"github.com/neovim/go-client/nvim"
 )
 
-// NOTE: Exコマンドの第一引数で問題のタイトルを指定する。
+// Exコマンドの第一引数で問題のタイトルを指定する。
 func (a *AOJ) Submit(v *nvim.Nvim, args []string) error {
 	if len(args) != 1 {
 		return util.ErrInvalidArgs
 	}
-
-	v.Command("echom '1'")
 
 	problemId := args[0]
 	buf, err := v.CurrentBuffer()
 	if err != nil {
 		return err
 	}
-	v.Command("echom '2'")
 	bufferName, err := v.BufferName(buf)
 	if err != nil {
 		return err
 	}
-	v.Command("echom '2'")
 	dotName := strings.Split(bufferName, ".")[len(strings.Split(bufferName, "."))-1]
 	var language string
 	switch dotName {
@@ -41,26 +38,22 @@ func (a *AOJ) Submit(v *nvim.Nvim, args []string) error {
 	if err != nil {
 		return err
 	}
-	v.Command("echom '3'")
 
 	token, err := aoj.Submit(a.Cookie, problemId, language, sourceCode)
 	if err != nil {
 		return err
 	}
-	v.Command("echom '4'")
 
 	res, err := aoj.Status(a.Cookie, token)
 	if err != nil {
 		return err
 	}
-	v.Command("echom '5'")
 
 	mes, err := checkAC(res)
 	if err != nil {
 		return err
 	}
-	v.Command("echom '5'")
-	v.Command("echom '" + mes + "'")
+	nvimutil.Log(mes)
 
 	return nil
 }
