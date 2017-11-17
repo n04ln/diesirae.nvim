@@ -41,6 +41,28 @@ func Session(id, rawPassword string) (string, error) {
 	return res.Cookies[0].Raw, nil
 }
 
+func IsAliveSession(cookie string) bool {
+	conf := config.GetConfig()
+
+	cli := gentleman.New()
+	cli.URL(conf.Endpoint)
+
+	req := cli.Request()
+	req.Method("GET")
+	req.Path("/self")
+	req.SetHeader("Cookie", cookie)
+
+	res, err := req.Send()
+	if err != nil {
+		return false
+	}
+	if !res.Ok {
+		return false
+	}
+
+	return true
+}
+
 type SubmitRes struct {
 	Token string `json:"token"`
 }

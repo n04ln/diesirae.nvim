@@ -16,6 +16,8 @@ func (a *AOJ) Submit(v *nvim.Nvim, args []string) error {
 		return util.ErrInvalidArgs
 	}
 
+	nvimutil := nvimutil.New(v)
+
 	problemId := args[0]
 	buf, err := v.CurrentBuffer()
 	if err != nil {
