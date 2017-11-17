@@ -7,4 +7,5 @@ var (
 	ErrResponseIsNotOK   = errors.New("response is not ok")
 	ErrCookieIsNotFound  = errors.New("cookie is not found")
 	ErrInvalidArgs       = errors.New("invalid args")
+	ErrInvalidJudgeId    = errors.New("invalid judge_id")
 )
