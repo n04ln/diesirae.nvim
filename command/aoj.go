@@ -18,12 +18,24 @@ type AOJ struct {
 
 func (a *AOJ) StatusMessage(stat *aoj.SubmissionStatus) string {
 	caseVerdictTemp := `testcase: %v, Memory %vkB, CpuTime: %vs, Status: %v`
-	caseVerdicts := make([]string, 0, len(stat.CaseVerdicts))
+	messages := make([]string, 0, len(stat.CaseVerdicts)+3)
 	for _, cv := range stat.CaseVerdicts {
-		caseVerdicts = append(caseVerdicts, fmt.Sprintf(caseVerdictTemp, cv.Label, cv.Memory, cv.CpuTime, cv.Status))
+		messages = append(messages, fmt.Sprintf(caseVerdictTemp, cv.Label, cv.Memory, cv.CpuTime, cv.Status))
 	}
 
-	return strings.Join(caseVerdicts, "\n")
+	if stat.CompileError != "" {
+		messages = append(messages, fmt.Sprntf("CompileError: %v", stat.CompileError))
+	}
+
+	if stat.RuntimeError != "" {
+		messages = append(messages, fmt.Sprntf("RuntimeError: %v", stat.RuntimeError))
+	}
+
+	if stat.UserOutput != "" {
+		messages = append(messages, fmt.Sprntf("UserOutput: %v", stat.UserOutput))
+	}
+
+	return strings.Join(messages, "\n")
 }
 
 func (a *AOJ) SetStatusByBuffer(buf nvim.Buffer, stat *aoj.SubmissionStatus) {
