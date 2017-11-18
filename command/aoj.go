@@ -17,7 +17,7 @@ type AOJ struct {
 }
 
 func (a *AOJ) StatusMessage(stat *aoj.SubmissionStatus) string {
-	caseVerdictTemp := `testcase: %v, Memory %vkB, CpuTime: %vs, Status: %v`
+	caseVerdictTemp := `testcase: %v, Memory: %vkB, CpuTime: %vs, Status: %v`
 	messages := make([]string, 0, len(stat.CaseVerdicts)+3)
 	for _, cv := range stat.CaseVerdicts {
 		messages = append(messages, fmt.Sprintf(caseVerdictTemp, cv.Label, cv.Memory, cv.CpuTime, cv.Status))
