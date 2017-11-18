@@ -1,6 +1,9 @@
 package command
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/NoahOrberg/aoj.nvim/aoj"
 	"github.com/NoahOrberg/aoj.nvim/config"
 	"github.com/neovim/go-client/nvim"
@@ -11,6 +14,16 @@ type AOJ struct {
 	Config            config.AOJConfig                          // NOTE: 環境変数から取得した情報格納
 	SubmittedStatuses map[nvim.Buffer]([]*aoj.SubmissionStatus) // NOTE: 提出したとき、あとからそれを確認できる用にするため、キーをバッファ番号にして確認用Tokenを保存する
 	ScratchBuffer     *nvim.Buffer
+}
+
+func (a *AOJ) StatusMessage(stat *aoj.SubmissionStatus) string {
+	caseVerdictTemp := `label: %v, Memory %v, CpuTime: %v, Status: %v`
+	caseVerdicts := make([]string, 0, len(stat.CaseVerdicts))
+	for _, cv := range stat.CaseVerdicts {
+		caseVerdicts = append(caseVerdicts, fmt.Sprintf(caseVerdictTemp, cv.Label, cv.Memory, cv.CpuTime, cv.Status))
+	}
+
+	return strings.Join(caseVerdicts, "\n")
 }
 
 func (a *AOJ) SetStatusByBuffer(buf nvim.Buffer, stat *aoj.SubmissionStatus) {

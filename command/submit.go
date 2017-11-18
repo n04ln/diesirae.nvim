@@ -49,6 +49,16 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 
 	a.SetStatusByBuffer(buf, stat)
 
+	var scratch *nvim.Buffer
+	if a.ScratchBuffer == nil {
+		scratch, err = nvimutil.NewScratchBuffer()
+		a.ScratchBuffer = scratch
+	} else {
+		scratch = a.ScratchBuffer
+	}
+
+	nvimutil.SetContentToBuffer(*scratch, a.StatusMessage(stat))
+
 	nvimutil.Log(mes)
 
 	return nil
