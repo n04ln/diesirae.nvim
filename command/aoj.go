@@ -10,6 +10,7 @@ type AOJ struct {
 	Cookie            string                                    // NOTE: ログインしたら、ここにクッキーをいれる
 	Config            config.AOJConfig                          // NOTE: 環境変数から取得した情報格納
 	SubmittedStatuses map[nvim.Buffer]([]*aoj.SubmissionStatus) // NOTE: 提出したとき、あとからそれを確認できる用にするため、キーをバッファ番号にして確認用Tokenを保存する
+	ScratchBuffer     *nvim.Buffer
 }
 
 func (a *AOJ) SetStatusByBuffer(buf nvim.Buffer, stat *aoj.SubmissionStatus) {

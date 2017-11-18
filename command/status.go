@@ -2,6 +2,7 @@ package command
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/NoahOrberg/aoj.nvim/nvimutil"
 	"github.com/neovim/go-client/nvim"
@@ -25,6 +26,16 @@ func (a *AOJ) Status(v *nvim.Nvim, args []string) error {
 	}
 
 	nvimutil := nvimutil.New(v)
+
+	var scratch *nvim.Buffer
+	if a.ScratchBuffer == nil {
+		scratch, err = nvimutil.NewScratchBuffer()
+		a.ScratchBuffer = scratch
+	} else {
+		scratch = a.ScratchBuffer
+	}
+
+	nvimutil.SetContentToBuffer(*scratch, fmt.Sprintf("%v", stat))
 
 	nvimutil.Log(mes)
 
