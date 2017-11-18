@@ -38,8 +38,10 @@ func (n *Nvimutil) CurrentBufferFileType() (string, error) {
 	switch dotName {
 	case "c":
 		language = "C"
-	case "hs": // NOTE: maybe not correct return "Haskell"? need fix
+	case "hs":
 		language = "Haskell"
+	case "go":
+		language = "Go"
 	default:
 		if dotName == "" {
 			return "", fmt.Errorf("cannot identify file type")
