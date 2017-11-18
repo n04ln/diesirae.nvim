@@ -88,3 +88,61 @@ func (n *Nvimutil) GetContentFromBuffer(buf nvim.Buffer) (string, error) {
 
 	return content, nil
 }
+
+func (n *Nvimutil) SetContentToBuffer(buf nvim.Buffer, content string) error {
+	var byteContent [][]byte
+
+	tmp := strings.Split(content, "\n")
+	for _, c := range tmp {
+		byteContent = append(byteContent, []byte(c))
+	}
+
+	return n.v.SetBufferLines(buf, 0, -1, true, byteContent)
+}
+
+func (n *Nvimutil) NewScratchBuffer() (*nvim.Buffer, error) {
+	bwin, err := n.v.CurrentWindow()
+	if err != nil {
+		return nil, err
+	}
+
+	if err := n.v.Command("new"); err != nil {
+		return nil, err
+	}
+
+	scratchBuf, err := n.v.CurrentBuffer()
+	if err != nil {
+		return nil, err
+	}
+
+	if err := n.v.SetBufferOption(scratchBuf, "buftype", "nofile"); err != nil {
+		return nil, err
+	}
+
+	if err := n.v.Command("setlocal noswapfile"); err != nil {
+		return nil, err
+	}
+
+	if err := n.v.SetBufferOption(scratchBuf, "undolevels", -1); err != nil {
+		return nil, err
+	}
+
+	if err := n.v.SetBufferName(scratchBuf, "Aizu Online Judge"); err != nil {
+		return nil, err
+	}
+
+	win, err := n.v.CurrentWindow()
+	if err != nil {
+		return nil, err
+	}
+
+	if err := n.v.SetWindowHeight(win, 15); err != nil {
+		return nil, err
+	}
+
+	if err := n.v.SetCurrentWindow(bwin); err != nil {
+		return nil, err
+	}
+
+	return &scratchBuf, nil
+}
