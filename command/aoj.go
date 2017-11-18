@@ -24,15 +24,15 @@ func (a *AOJ) StatusMessage(stat *aoj.SubmissionStatus) string {
 	}
 
 	if stat.CompileError != "" {
-		messages = append(messages, fmt.Sprntf("CompileError: %v", stat.CompileError))
+		messages = append(messages, fmt.Sprintf("CompileError: %v", stat.CompileError))
 	}
 
 	if stat.RuntimeError != "" {
-		messages = append(messages, fmt.Sprntf("RuntimeError: %v", stat.RuntimeError))
+		messages = append(messages, fmt.Sprintf("RuntimeError: %v", stat.RuntimeError))
 	}
 
 	if stat.UserOutput != "" {
-		messages = append(messages, fmt.Sprntf("UserOutput: %v", stat.UserOutput))
+		messages = append(messages, fmt.Sprintf("UserOutput: %v", stat.UserOutput))
 	}
 
 	return strings.Join(messages, "\n")
