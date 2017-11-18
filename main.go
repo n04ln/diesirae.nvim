@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/NoahOrberg/aoj.nvim/command"
+	"github.com/NoahOrberg/diesirae.nvim/command"
 	"github.com/neovim/go-client/nvim/plugin"
 )
 

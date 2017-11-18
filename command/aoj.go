@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/NoahOrberg/aoj.nvim/aoj"
-	"github.com/NoahOrberg/aoj.nvim/config"
+	"github.com/NoahOrberg/diesirae.nvim/aoj"
+	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/neovim/go-client/nvim"
 )
 

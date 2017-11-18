@@ -1,2 +1,2 @@
-# aoj.nvim
+# diesirae.nvim
 AOJ client by NeoVim

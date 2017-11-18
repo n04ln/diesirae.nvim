@@ -18,7 +18,7 @@ func New(v *nvim.Nvim) *Nvimutil {
 }
 
 func (n *Nvimutil) Log(message string) error {
-	return n.v.Command("echom 'aoj.nvim: " + message + "'")
+	return n.v.Command("echom 'diesirae.nvim: " + message + "'")
 }
 
 func (n *Nvimutil) CurrentBufferFileType() (string, error) {

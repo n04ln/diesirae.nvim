@@ -1,15 +1,15 @@
-if exists('g:loaded_aoj')
+if exists('g:loaded_diesirae')
   finish
 endif
-let g:loaded_aoj = 1
+let g:loaded_diesirae = 1
 
-function! s:RequireAOJ(host) abort
-  return jobstart(['aoj.nvim'], { 'rpc': v:true })
+function! s:RequireDiesIrae(host) abort
+  return jobstart(['diesirae.nvim'], { 'rpc': v:true })
 endfunction
 
 
-call remote#host#Register('aoj.nvim', '0', function('s:RequireAOJ'))
-call remote#host#RegisterPlugin('aoj.nvim', '0', [
+call remote#host#Register('diesirae.nvim', '0', function('s:RequireDiesIrae'))
+call remote#host#RegisterPlugin('diesirae.nvim', '0', [
   \ {'type': 'command', 'name': 'AojSubmit',  'sync': 1, 'opts': {'nargs': '+'}},
   \ {'type': 'command', 'name': 'AojStatus',  'sync': 1, 'opts': {}},
   \ {'type': 'command', 'name': 'AojSelf',    'sync': 1, 'opts': {}},

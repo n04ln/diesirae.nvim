@@ -3,7 +3,7 @@ package command
 import (
 	"errors"
 
-	"github.com/NoahOrberg/aoj.nvim/nvimutil"
+	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
 	"github.com/neovim/go-client/nvim"
 )
 

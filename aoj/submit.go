@@ -3,8 +3,8 @@ package aoj
 import (
 	"encoding/json"
 
-	"github.com/NoahOrberg/aoj.nvim/config"
-	"github.com/NoahOrberg/aoj.nvim/util"
+	"github.com/NoahOrberg/diesirae.nvim/config"
+	"github.com/NoahOrberg/diesirae.nvim/util"
 	"github.com/h2non/gentleman"
 	"github.com/h2non/gentleman/plugins/body"
 )

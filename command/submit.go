@@ -1,9 +1,9 @@
 package command
 
 import (
-	"github.com/NoahOrberg/aoj.nvim/aoj"
-	"github.com/NoahOrberg/aoj.nvim/nvimutil"
-	"github.com/NoahOrberg/aoj.nvim/util"
+	"github.com/NoahOrberg/diesirae.nvim/aoj"
+	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
+	"github.com/NoahOrberg/diesirae.nvim/util"
 	"github.com/neovim/go-client/nvim"
 )
 
