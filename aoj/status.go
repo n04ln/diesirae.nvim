@@ -3,6 +3,7 @@ package aoj
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/NoahOrberg/diesirae.nvim/config"
@@ -32,6 +33,28 @@ type SubmissionStatus struct {
 	CompileError string         `json:"compileError"`
 	RuntimeError string         `json:"runtimeError"`
 	UserOutput   string         `json:"userOutput"`
+}
+
+func (stat *SubmissionStatus) String() string {
+	caseVerdictTemp := `testcase: %v, Memory: %vkB, CpuTime: %vs, Status: %v`
+	messages := make([]string, 0, len(stat.CaseVerdicts)+3)
+	for _, cv := range stat.CaseVerdicts {
+		messages = append(messages, fmt.Sprintf(caseVerdictTemp, cv.Label, cv.Memory, cv.CpuTime, cv.Status))
+	}
+
+	if stat.CompileError != "" {
+		messages = append(messages, fmt.Sprintf("CompileError: %v", stat.CompileError))
+	}
+
+	if stat.RuntimeError != "" {
+		messages = append(messages, fmt.Sprintf("RuntimeError: %v", stat.RuntimeError))
+	}
+
+	if stat.UserOutput != "" {
+		messages = append(messages, fmt.Sprintf("UserOutput: %v", stat.UserOutput))
+	}
+
+	return strings.Join(messages, "\n")
 }
 
 func (s *SubmissionStatus) CheckAC() (string, error) {

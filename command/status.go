@@ -34,7 +34,7 @@ func (a *AOJ) Status(v *nvim.Nvim, args []string) error {
 		scratch = a.ScratchBuffer
 	}
 
-	nvimutil.SetContentToBuffer(*scratch, a.StatusMessage(stat))
+	nvimutil.SetContentToBuffer(*scratch, stat.String())
 
 	nvimutil.Log(mes)
 
