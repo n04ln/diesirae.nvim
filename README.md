@@ -1,5 +1,5 @@
 # diesirae.nvim
-AOJ client by NeoVim
+AOJ client by NeoVim  
 ![lastjudgement](./img/img.jpg)
 
 ## How to install
