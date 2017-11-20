@@ -38,7 +38,7 @@ diesirae.nvim provide 4 commands
 :AojSession
 ```
 ### AojSubmit
-- Submit contents in current buffer
+- Submit source code in current buffer
 - Need a argument
   - Problem ID
 - The result(status) is written in a scratch buffer
