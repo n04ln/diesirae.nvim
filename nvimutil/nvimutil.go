@@ -103,42 +103,21 @@ func (n *Nvimutil) SetContentToBuffer(buf nvim.Buffer, content string) error {
 }
 
 func (n *Nvimutil) NewScratchBuffer() (*nvim.Buffer, error) {
-	bwin, err := n.v.CurrentWindow()
-	if err != nil {
-		return nil, err
-	}
+	var scratchBuf nvim.Buffer
+	var bwin nvim.Window
+	var win nvim.Window
 
-	if err := n.v.Command("new"); err != nil {
-		return nil, err
-	}
+	b := n.v.NewBatch()
+	b.CurrentWindow(&bwin)
+	b.Command("silent! execute 'new' 'AizuOnlineJudge'")
+	b.CurrentBuffer(&scratchBuf)
+	b.SetBufferOption(scratchBuf, "buftype", "nofile")
+	b.Command("setlocal noswapfile")
+	b.SetBufferOption(scratchBuf, "undolevels", -1)
+	b.CurrentWindow(&win)
+	b.SetWindowHeight(win, 15)
 
-	scratchBuf, err := n.v.CurrentBuffer()
-	if err != nil {
-		return nil, err
-	}
-
-	if err := n.v.SetBufferOption(scratchBuf, "buftype", "nofile"); err != nil {
-		return nil, err
-	}
-
-	if err := n.v.Command("setlocal noswapfile"); err != nil {
-		return nil, err
-	}
-
-	if err := n.v.SetBufferOption(scratchBuf, "undolevels", -1); err != nil {
-		return nil, err
-	}
-
-	if err := n.v.SetBufferName(scratchBuf, "Aizu Online Judge"); err != nil {
-		return nil, err
-	}
-
-	win, err := n.v.CurrentWindow()
-	if err != nil {
-		return nil, err
-	}
-
-	if err := n.v.SetWindowHeight(win, 15); err != nil {
+	if err := b.Execute(); err != nil {
 		return nil, err
 	}
 
