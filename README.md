@@ -39,7 +39,7 @@ diesirae.nvim provide 4 commands
 ```
 ### AojSubmit
 - Submit source code in current buffer
-- Need a argument
+- Need an argument
   - Problem ID
 - The result(status) is written in a scratch buffer
 ``` vim
