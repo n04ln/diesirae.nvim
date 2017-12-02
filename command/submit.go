@@ -35,7 +35,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 		return err
 	}
 
-	stat, err := aoj.Status(a.Cookie, token)
+	stat, err := aoj.Status(a.Cookie, token, problemId)
 	if err != nil {
 		return err
 	}

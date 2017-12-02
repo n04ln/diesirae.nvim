@@ -2,6 +2,7 @@ package command
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
 	"github.com/neovim/go-client/nvim"
@@ -51,7 +52,23 @@ func (a *AOJ) Status(v *nvim.Nvim, args []string) error {
 //   2 - 2017/01/01 12:01:26 ITP1_1_A
 //   3 - 2017/01/01 12:01:34 ITP1_1_A
 //   ...
-func (a *AOJ) ListStatus(v *nvim.Nvim, args []string) error {
+func (a *AOJ) StatusList(v *nvim.Nvim, args []string) error {
 	defer a.panicLog(v)
 
+	nvimutil := nvimutil.New(v)
+
+	var output string
+	for b, status := range a.SubmittedStatuses {
+		for i := 0; i < len(status); i++ {
+			output += fmt.Sprintf("%v - %v %s", b, status[i].Time, status[i].ProblemId)
+			output += "\n"
+		}
+	}
+
+	err := nvimutil.SetContentToBuffer(*a.ScratchBuffer, output)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

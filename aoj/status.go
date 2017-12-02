@@ -33,6 +33,8 @@ type SubmissionStatus struct {
 	CompileError string         `json:"compileError"`
 	RuntimeError string         `json:"runtimeError"`
 	UserOutput   string         `json:"userOutput"`
+	ProblemId    string
+	Time         time.Time
 }
 
 func (stat *SubmissionStatus) String() string {
@@ -66,7 +68,7 @@ func (s *SubmissionStatus) CheckAC() (string, error) {
 	return fmt.Sprintf("All case: AC"), nil
 }
 
-func Status(cookie, token string) (*SubmissionStatus, error) {
+func Status(cookie, token, problemId string) (*SubmissionStatus, error) {
 	recents, err := getRecentSubmissionRecords(cookie)
 	if err != nil {
 		return nil, err
@@ -98,6 +100,8 @@ RETRY:
 	if err := json.Unmarshal([]byte(res.String()), &substatus); err != nil {
 		return nil, err
 	}
+	substatus.Time = time.Now()
+	substatus.ProblemId = problemId
 
 	return &substatus, nil
 }
