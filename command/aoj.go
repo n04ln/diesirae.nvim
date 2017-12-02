@@ -17,19 +17,6 @@ type AOJ struct {
 	DebugScratchBuffer *nvim.Buffer                              // NOTE: debug用. panicの情報などを吐く
 }
 
-func (a *AOJ) SetStatusByBuffer(buf nvim.Buffer, stat *aoj.SubmissionStatus) {
-	a.SubmittedStatuses[buf] = append(a.SubmittedStatuses[buf], stat)
-}
-
-func (a *AOJ) GetRecentStatusByBuffer(buf nvim.Buffer) (*aoj.SubmissionStatus, bool) {
-	stats, ok := a.SubmittedStatuses[buf]
-	if !ok {
-		return nil, false
-	}
-
-	return stats[len(stats)-1], true
-}
-
 func NewAOJ() (*AOJ, error) {
 	conf := config.GetConfig()
 
@@ -43,6 +30,19 @@ func NewAOJ() (*AOJ, error) {
 		Config:            conf,
 		SubmittedStatuses: map[nvim.Buffer]([]*aoj.SubmissionStatus){},
 	}, nil
+}
+
+func (a *AOJ) SetStatusByBuffer(buf nvim.Buffer, stat *aoj.SubmissionStatus) {
+	a.SubmittedStatuses[buf] = append(a.SubmittedStatuses[buf], stat)
+}
+
+func (a *AOJ) GetRecentStatusByBuffer(buf nvim.Buffer) (*aoj.SubmissionStatus, bool) {
+	stats, ok := a.SubmittedStatuses[buf]
+	if !ok {
+		return nil, false
+	}
+
+	return stats[len(stats)-1], true
 }
 
 func (a *AOJ) panicLog(v *nvim.Nvim) {
