@@ -7,10 +7,8 @@ import (
 	"github.com/neovim/go-client/nvim"
 )
 
-/**
- * Vim-Command definition:
- * Exコマンドの第一引数で問題のタイトルを指定する。
- */
+// Vim-Command definition:
+// Exコマンドの第一引数で問題のタイトルを指定する。
 func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	defer a.panicLog(v)
 

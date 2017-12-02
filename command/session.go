@@ -7,10 +7,8 @@ import (
 	"github.com/neovim/go-client/nvim"
 )
 
-/**
- * Vim-Command definition:
- * セッションが生きているかどうかの確認
- */
+// Vim-Command definition:
+// セッションが生きているかどうかの確認
 func (a *AOJ) Self(v *nvim.Nvim, args []string) error {
 	defer a.panicLog(v)
 
@@ -25,10 +23,8 @@ func (a *AOJ) Self(v *nvim.Nvim, args []string) error {
 	return nil
 }
 
-/**
- * Vim-Command definition:
- * セッションを張り直す
- */
+// Vim-Command definition:
+// セッションを張り直す
 func (a *AOJ) Session(v *nvim.Nvim, args []string) error {
 	defer a.panicLog(v)
 
