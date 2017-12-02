@@ -9,17 +9,23 @@ import (
 
 // セッションが生きているかどうかの確認
 func (a *AOJ) Self(v *nvim.Nvim, args []string) error {
+	defer a.panicLog(v)
+
 	nvimutil := nvimutil.New(v)
+
 	if ok := aoj.IsAliveSession(a.Cookie); !ok {
 		nvimutil.Log("session not exists")
 		return nil
 	}
 	nvimutil.Log("session exists")
+
 	return nil
 }
 
 // セッションを張り直す
 func (a *AOJ) Session(v *nvim.Nvim, args []string) error {
+	defer a.panicLog(v)
+
 	nvimutil := nvimutil.New(v)
 
 	if ok := aoj.IsAliveSession(a.Cookie); ok {

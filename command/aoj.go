@@ -1,16 +1,20 @@
 package command
 
 import (
+	"fmt"
+
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
 	"github.com/NoahOrberg/diesirae.nvim/config"
+	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
 	"github.com/neovim/go-client/nvim"
 )
 
 type AOJ struct {
-	Cookie            string                                    // NOTE: ログインしたら、ここにクッキーをいれる
-	Config            config.AOJConfig                          // NOTE: 環境変数から取得した情報格納
-	SubmittedStatuses map[nvim.Buffer]([]*aoj.SubmissionStatus) // NOTE: 提出したとき、あとからそれを確認できる用にするため、キーをバッファ番号にして確認用Tokenを保存する
-	ScratchBuffer     *nvim.Buffer
+	Cookie             string                                    // NOTE: ログインしたら、ここにクッキーをいれる
+	Config             config.AOJConfig                          // NOTE: 環境変数から取得した情報格納
+	SubmittedStatuses  map[nvim.Buffer]([]*aoj.SubmissionStatus) // NOTE: 提出したとき、あとからそれを確認できる用にするため、キーをバッファ番号にして確認用Tokenを保存する
+	ScratchBuffer      *nvim.Buffer                              // NOTE: Statusなどを吐く
+	DebugScratchBuffer *nvim.Buffer                              // NOTE: debug用. panicの情報などを吐く
 }
 
 func (a *AOJ) SetStatusByBuffer(buf nvim.Buffer, stat *aoj.SubmissionStatus) {
@@ -39,4 +43,18 @@ func NewAOJ() (*AOJ, error) {
 		Config:            conf,
 		SubmittedStatuses: map[nvim.Buffer]([]*aoj.SubmissionStatus){},
 	}, nil
+}
+
+func (a *AOJ) panicLog(v *nvim.Nvim) {
+	n := nvimutil.New(v)
+
+	err := recover()
+
+	if a.DebugScratchBuffer == nil && err != nil {
+		a.DebugScratchBuffer, _ = n.NewScratchBuffer("DEBUG")
+	}
+
+	if err != nil {
+		_ = n.SetContentToBuffer(*a.DebugScratchBuffer, fmt.Sprintf("%v", err))
+	}
 }

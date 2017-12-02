@@ -9,6 +9,8 @@ import (
 
 // Exコマンドの第一引数で問題のタイトルを指定する。
 func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
+	defer a.panicLog(v)
+
 	if len(args) != 1 {
 		return util.ErrInvalidArgs
 	}
@@ -51,7 +53,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 
 	var scratch *nvim.Buffer
 	if a.ScratchBuffer == nil {
-		scratch, err = nvimutil.NewScratchBuffer()
+		scratch, err = nvimutil.NewScratchBuffer("AOJ Status")
 		a.ScratchBuffer = scratch
 	} else {
 		scratch = a.ScratchBuffer

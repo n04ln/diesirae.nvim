@@ -102,14 +102,14 @@ func (n *Nvimutil) SetContentToBuffer(buf nvim.Buffer, content string) error {
 	return n.v.SetBufferLines(buf, 0, -1, true, byteContent)
 }
 
-func (n *Nvimutil) NewScratchBuffer() (*nvim.Buffer, error) {
+func (n *Nvimutil) NewScratchBuffer(bufferName string) (*nvim.Buffer, error) {
 	var scratchBuf nvim.Buffer
 	var bwin nvim.Window
 	var win nvim.Window
 
 	b := n.v.NewBatch()
 	b.CurrentWindow(&bwin)
-	b.Command("silent! execute 'new' 'AizuOnlineJudge'")
+	b.Command("silent! execute 'new' '" + bufferName + "'")
 	b.CurrentBuffer(&scratchBuf)
 	b.SetBufferOption(scratchBuf, "buftype", "nofile")
 	b.Command("setlocal noswapfile")

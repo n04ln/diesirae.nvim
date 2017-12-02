@@ -9,6 +9,10 @@ import (
 
 // 既に提出したバッファであれば、その一番最近の結果を返す
 func (a *AOJ) Status(v *nvim.Nvim, args []string) error {
+	defer a.panicLog(v)
+
+	nvimutil := nvimutil.New(v)
+
 	buf, err := v.CurrentBuffer()
 	if err != nil {
 		return err
@@ -24,11 +28,9 @@ func (a *AOJ) Status(v *nvim.Nvim, args []string) error {
 		return err
 	}
 
-	nvimutil := nvimutil.New(v)
-
 	var scratch *nvim.Buffer
 	if a.ScratchBuffer == nil {
-		scratch, err = nvimutil.NewScratchBuffer()
+		scratch, err = nvimutil.NewScratchBuffer("AOJ Status")
 		a.ScratchBuffer = scratch
 	} else {
 		scratch = a.ScratchBuffer
