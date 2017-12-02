@@ -28,7 +28,7 @@ func TestSubmitAndStatus(t *testing.T) {
 	require.NoError(t, err)
 	pp.Println(token)
 
-	res, err := Status(cookie, token)
+	res, err := Status(cookie, token, problemId)
 	require.NoError(t, err)
 	pp.Println(res)
 }
