@@ -7,6 +7,10 @@ import (
 	"github.com/neovim/go-client/nvim"
 )
 
+const (
+	getWindoList = `diesirae#getWindowList()`
+)
+
 type Nvimutil struct {
 	v *nvim.Nvim
 }
@@ -105,7 +109,7 @@ func (n *Nvimutil) SetContentToBuffer(buf nvim.Buffer, content string) error {
 func (n *Nvimutil) GetWindowList() (map[string]string, error) {
 	res := make(map[string]string)
 
-	if err := n.v.Eval(`call GetWindowList()`, &res); err != nil {
+	if err := n.v.Eval(getWindoList, &res); err != nil {
 		return nil, err
 	}
 
