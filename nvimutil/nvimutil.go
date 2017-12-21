@@ -46,6 +46,8 @@ func (n *Nvimutil) CurrentBufferFileType() (string, error) {
 		language = "Haskell"
 	case "go":
 		language = "Go"
+	case "cpp":
+		language = "C++14"
 	default:
 		if dotName == "" {
 			return "", fmt.Errorf("cannot identify file type")
