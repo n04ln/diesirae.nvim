@@ -70,7 +70,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	}
 
 	if !opened {
-		for win, bufname := range winls {
+		for _, bufname := range winls {
 			if bufname == "AOJ Status" {
 				opened = true
 				break

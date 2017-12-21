@@ -1,7 +1,7 @@
 " GetWindowList:
 "  return Dictionary Type.
 "    key is window number(String), and value is buffername(String).
-function! GetWindowList()
+function! diesirae#getWindowList()
     let res = {}
 
     for i in range(1, winnr('$'))
