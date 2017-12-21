@@ -102,6 +102,16 @@ func (n *Nvimutil) SetContentToBuffer(buf nvim.Buffer, content string) error {
 	return n.v.SetBufferLines(buf, 0, -1, true, byteContent)
 }
 
+func (n *Nvimutil) GetWindowList() (map[string]string, error) {
+	res := make(map[string]string)
+
+	if err := n.v.Eval(`call GetWindowList()`, &res); err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
 func (n *Nvimutil) NewScratchBuffer(bufferName string) (*nvim.Buffer, error) {
 	var scratchBuf nvim.Buffer
 	var bwin nvim.Window
@@ -112,6 +122,7 @@ func (n *Nvimutil) NewScratchBuffer(bufferName string) (*nvim.Buffer, error) {
 	b.Command("silent! execute 'new' '" + bufferName + "'")
 	b.CurrentBuffer(&scratchBuf)
 	b.SetBufferOption(scratchBuf, "buftype", "nofile")
+	b.SetBufferOption(scratchBuf, "bufhidden", "hide")
 	b.Command("setlocal noswapfile")
 	b.SetBufferOption(scratchBuf, "undolevels", -1)
 	b.CurrentWindow(&win)

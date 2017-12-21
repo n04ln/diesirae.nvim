@@ -52,15 +52,35 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 
 	a.SetStatusByBuffer(buf, stat)
 
+	var opened bool
 	var scratch *nvim.Buffer
 	if a.ScratchBuffer == nil {
 		scratch, err = nvimutil.NewScratchBuffer("AOJ Status")
 		a.ScratchBuffer = scratch
+		opened = true
 	} else {
 		scratch = a.ScratchBuffer
 	}
 
 	nvimutil.SetContentToBuffer(*scratch, stat.String())
+
+	winls, err := nvimutil.GetWindowList()
+	if err != nil {
+		return err
+	}
+
+	if !opened {
+		for win, bufname := range winls {
+			if bufname == "AOJ Status" {
+				opened = true
+				break
+			}
+		}
+	}
+
+	if !opened {
+		nvimutil.Log("not open Status Window")
+	}
 
 	nvimutil.Log(mes)
 
