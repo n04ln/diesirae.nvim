@@ -81,7 +81,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	}
 
 	if !opened {
-		nvimutil.Split(*scratch)
+		nvimutil.SplitOpenBuffer(*scratch)
 	}
 
 	nvimutil.Log(mes)

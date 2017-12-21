@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	getWindoList = `diesirae#getWindowList()`
+	getWindowList = `diesirae#getWindowList()`
 )
 
 type Nvimutil struct {
@@ -111,14 +111,14 @@ func (n *Nvimutil) SetContentToBuffer(buf nvim.Buffer, content string) error {
 func (n *Nvimutil) GetWindowList() (map[string]string, error) {
 	res := make(map[string]string)
 
-	if err := n.v.Eval(getWindoList, &res); err != nil {
+	if err := n.v.Eval(getWindowList, &res); err != nil {
 		return nil, err
 	}
 
 	return res, nil
 }
 
-func (n *Nvimutil) Split(buf nvim.Buffer) error {
+func (n *Nvimutil) SplitOpenBuffer(buf nvim.Buffer) error {
 	var bwin nvim.Window
 	var win nvim.Window
 
