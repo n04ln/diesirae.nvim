@@ -2,6 +2,7 @@ package command
 
 import (
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
+	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
 	"github.com/NoahOrberg/diesirae.nvim/util"
 	"github.com/neovim/go-client/nvim"
@@ -54,8 +55,9 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 
 	var opened bool
 	var scratch *nvim.Buffer
+	conf := config.GetConfig()
 	if a.ScratchBuffer == nil {
-		scratch, err = nvimutil.NewScratchBuffer("AOJ Status")
+		scratch, err = nvimutil.NewScratchBuffer(conf.ResultBufferName)
 		a.ScratchBuffer = scratch
 		opened = true
 	} else {
@@ -71,7 +73,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 
 	if !opened {
 		for _, bufname := range winls {
-			if bufname == "AOJ Status" {
+			if bufname == conf.ResultBufferName {
 				opened = true
 				break
 			}
@@ -79,7 +81,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	}
 
 	if !opened {
-		nvimutil.Log("not open Status Window")
+		nvimutil.Split(*scratch)
 	}
 
 	nvimutil.Log(mes)

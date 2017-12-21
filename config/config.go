@@ -5,9 +5,10 @@ import (
 )
 
 type AOJConfig struct {
-	Endpoint    string `default:"https://judgeapi.u-aizu.ac.jp"`
-	ID          string `default:""`
-	RawPassword string `default:""`
+	Endpoint         string `default:"https://judgeapi.u-aizu.ac.jp"`
+	ResultBufferName string `default:"AOJ Status"`
+	ID               string `default:""`
+	RawPassword      string `default:""`
 }
 
 var conf AOJConfig

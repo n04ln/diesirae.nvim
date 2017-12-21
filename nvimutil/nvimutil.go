@@ -21,8 +21,8 @@ func New(v *nvim.Nvim) *Nvimutil {
 	}
 }
 
-func (n *Nvimutil) Log(message string) error {
-	return n.v.Command("echom 'diesirae.nvim: " + message + "'")
+func (n *Nvimutil) Log(message interface{}) error {
+	return n.v.Command("echom 'diesirae.nvim: " + fmt.Sprintf("%v", message) + "'")
 }
 
 func (n *Nvimutil) CurrentBufferFileType() (string, error) {
@@ -116,6 +116,22 @@ func (n *Nvimutil) GetWindowList() (map[string]string, error) {
 	return res, nil
 }
 
+func (n *Nvimutil) Split(buf nvim.Buffer) error {
+	var bwin nvim.Window
+	var win nvim.Window
+
+	b := n.v.NewBatch()
+	b.CurrentWindow(&bwin)
+	b.Command(fmt.Sprintf("sb %d", buf))
+	b.CurrentWindow(&win)
+	b.SetWindowHeight(win, 15)
+	if err := b.Execute(); err != nil {
+		return err
+	}
+
+	return n.v.SetCurrentWindow(bwin)
+}
+
 func (n *Nvimutil) NewScratchBuffer(bufferName string) (*nvim.Buffer, error) {
 	var scratchBuf nvim.Buffer
 	var bwin nvim.Window
@@ -128,6 +144,7 @@ func (n *Nvimutil) NewScratchBuffer(bufferName string) (*nvim.Buffer, error) {
 	b.SetBufferOption(scratchBuf, "buftype", "nofile")
 	b.SetBufferOption(scratchBuf, "bufhidden", "hide")
 	b.Command("setlocal noswapfile")
+	b.Command("setlocal nobuflisted")
 	b.SetBufferOption(scratchBuf, "undolevels", -1)
 	b.CurrentWindow(&win)
 	b.SetWindowHeight(win, 15)
