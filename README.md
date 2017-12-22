@@ -1,6 +1,6 @@
 # diesirae.nvim
 
-()[https://travis-ci.org/NoahOrberg/diesirae.nvim.svg?branch=master)
+[](https://travis-ci.org/NoahOrberg/diesirae.nvim.svg?branch=master)
 
 AOJ client by NeoVim  
 
