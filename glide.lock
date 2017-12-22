@@ -1,5 +1,5 @@
 hash: 3dd06c11f8c00707633cbf42059ac994c78e0dfbb40c81b62802d22d14279863
-updated: 2017-12-03T02:03:14.730447618+09:00
+updated: 2017-12-22T11:46:55.203928412+09:00
 imports:
 - name: github.com/h2non/gentleman
   version: b18ebfa8f3ea4d2f620e332d7a29e55647ae729e
@@ -8,14 +8,14 @@ imports:
 - name: github.com/kelseyhightower/envconfig
   version: 462fda1f11d8cad3660e52737b8beefd27acfb3f
 - name: github.com/neovim/go-client
-  version: 43c11d7eefc3b26af92d18a90224a0eaceb04f89
+  version: 11df26a7bb73a1694f64cb668d689402630a50ff
   subpackages:
   - msgpack
   - msgpack/rpc
   - nvim
   - nvim/plugin
 - name: golang.org/x/net
-  version: a8b9294777976932365dabb6640cf1468d95c70f
+  version: d866cfc389cec985d6fda2859936a575a55a3ab6
   subpackages:
   - publicsuffix
 - name: gopkg.in/h2non/gentleman.v2
@@ -54,6 +54,6 @@ testImports:
   - assert
   - require
 - name: golang.org/x/sys
-  version: 8b4580aae2a0dd0c231a45d3ccb8434ff533b840
+  version: d818ba11af4465e00c1998bd3f8a55603b422290
   subpackages:
   - unix
