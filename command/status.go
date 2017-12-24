@@ -60,8 +60,8 @@ func (a *AOJ) StatusList(v *nvim.Nvim, args []string) error {
 	var output string
 	for b, status := range a.SubmittedStatuses {
 		for i := 0; i < len(status); i++ {
-			output += fmt.Sprintf("%v - %v %s", b, status[i].Time, status[i].ProblemId)
-			output += "\n"
+			output += fmt.Sprintf("%v - %v %s\n", b, status[i].Time, status[i].ProblemId)
+			output += fmt.Sprintf("           %v\n", status[i].String())
 		}
 	}
 
