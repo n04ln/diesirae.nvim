@@ -62,7 +62,7 @@ diesirae.nvim provides 5 commands
 :AojSubmit
 ```
 
-or use `<C-d>s`
+or use `<C-d>s` in normal mode
 
 ### AojStatus
 
@@ -74,7 +74,7 @@ or use `<C-d>s`
 
 ### AojStatusList
 
-- Get status list of current buffer
+- Get status list of all buffers
 
 ``` vim
 :AojStatusList
