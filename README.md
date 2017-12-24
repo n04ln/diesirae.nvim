@@ -55,13 +55,14 @@ diesirae.nvim provides 5 commands
 ### AojSubmit
 
 - Submit source code in current buffer
-- Need an argument
-  - Problem ID
+  - Please enter the ProblemID or URL
 - The result(status) is written in a scratch buffer
 
 ``` vim
-:AojSubmit ITP1_1_A
+:AojSubmit
 ```
+
+or use `<C-d>s`
 
 ### AojStatus
 

@@ -16,3 +16,5 @@ call remote#host#RegisterPlugin('diesirae.nvim', '0', [
 \ {'type': 'command', 'name': 'AojStatusList', 'sync': 1, 'opts': {}},
 \ {'type': 'command', 'name': 'AojSubmit', 'sync': 1, 'opts': {}},
 \ ])
+
+nnoremap <C-d>s :AojSubmit
