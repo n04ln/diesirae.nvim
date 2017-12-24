@@ -46,15 +46,18 @@ func (a *AOJ) GetRecentStatusByBuffer(buf nvim.Buffer) (*aoj.SubmissionStatus, b
 }
 
 func (a *AOJ) panicLog(v *nvim.Nvim) {
-	n := nvimutil.New(v)
+	// only when debug mode
+	if config.GetConfig().Mode == "debug" {
+		n := nvimutil.New(v)
 
-	err := recover()
+		err := recover()
 
-	if a.DebugScratchBuffer == nil && err != nil {
-		a.DebugScratchBuffer, _ = n.NewScratchBuffer("DEBUG")
-	}
+		if a.DebugScratchBuffer == nil && err != nil {
+			a.DebugScratchBuffer, _ = n.NewScratchBuffer("DEBUG")
+		}
 
-	if err != nil {
-		_ = n.SetContentToBuffer(*a.DebugScratchBuffer, fmt.Sprintf("%v", err))
+		if err != nil {
+			n.SetContentToBuffer(*a.DebugScratchBuffer, fmt.Sprintf("%v", err))
+		}
 	}
 }

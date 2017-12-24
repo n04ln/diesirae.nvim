@@ -7,6 +7,7 @@ import (
 type AOJConfig struct {
 	Endpoint         string `default:"https://judgeapi.u-aizu.ac.jp"`
 	ResultBufferName string `default:"AOJ Status"`
+	Mode             string `default:"release"`
 	ID               string `default:""`
 	RawPassword      string `default:""`
 }
