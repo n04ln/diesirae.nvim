@@ -65,6 +65,11 @@ func (a *AOJ) StatusList(v *nvim.Nvim, args []string) error {
 		}
 	}
 
+	if a.ScratchBuffer == nil {
+		// NOTE: ScratchBufferがないなら、未提出扱いにする
+		return errors.New("not yet submitted")
+	}
+
 	err := nvimutil.SetContentToBuffer(*a.ScratchBuffer, output)
 	if err != nil {
 		return err
