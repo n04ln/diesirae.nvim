@@ -28,7 +28,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 		problemId = input
 	} else {
 		ids, ok := u.Query()["id"]
-		if !ok {
+		if !ok || len(ids) == 0 {
 			return errors.New("no such id")
 		}
 
