@@ -161,3 +161,12 @@ func (n *Nvimutil) NewScratchBuffer(bufferName string) (*nvim.Buffer, error) {
 
 	return &scratchBuf, nil
 }
+
+func (n *Nvimutil) Input() (string, error) {
+	var input string
+	if err := n.v.Eval(`input("diesirae.nvim: ")`, &input); err != nil {
+		return "", err
+	}
+
+	return input, nil
+}

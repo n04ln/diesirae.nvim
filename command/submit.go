@@ -1,6 +1,9 @@
 package command
 
 import (
+	"errors"
+	"net/url"
+
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
 	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
@@ -19,7 +22,20 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 
 	nvimutil := nvimutil.New(v)
 
-	problemId := args[0]
+	var problemId string
+	input, err := nvimutil.Input()
+	// ここでは、URLでくるか、問題の題名だけでくるか、両方を受容する
+	// TODO: 変更される余地ありかもなので、ここは要観察。現行版のAOJはid=XXXXでクエリパラメータ渡してるのでいいが、他の場合は要修正。
+	if u, err := url.ParseRequestURI(input); err != nil {
+		problemId = input
+	} else {
+		ids, ok := u.Query()["id"]
+		if !ok {
+			return errors.New("no such id")
+		}
+
+		problemId = ids[0]
+	}
 
 	language, err := nvimutil.CurrentBufferFileType()
 	if err != nil {
