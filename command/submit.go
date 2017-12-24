@@ -7,7 +7,6 @@ import (
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
 	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
-	"github.com/NoahOrberg/diesirae.nvim/util"
 	"github.com/neovim/go-client/nvim"
 )
 
@@ -16,14 +15,10 @@ import (
 func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	defer a.panicLog(v)
 
-	if len(args) != 1 {
-		return util.ErrInvalidArgs
-	}
-
 	nvimutil := nvimutil.New(v)
 
 	var problemId string
-	input, err := nvimutil.Input()
+	input, err := nvimutil.Input("problem id")
 	// ここでは、URLでくるか、問題の題名だけでくるか、両方を受容する
 	// TODO: 変更される余地ありかもなので、ここは要観察。現行版のAOJはid=XXXXでクエリパラメータ渡してるのでいいが、他の場合は要修正。
 	if u, err := url.ParseRequestURI(input); err != nil {
@@ -99,8 +94,6 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	if !opened {
 		nvimutil.SplitOpenBuffer(*scratch)
 	}
-
-	nvimutil.Log(mes)
 
 	return nil
 }
