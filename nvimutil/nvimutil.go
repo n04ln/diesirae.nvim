@@ -40,6 +40,8 @@ func (n *Nvimutil) CurrentBufferFileType() (string, error) {
 
 	var language string
 	switch dotName {
+	// Languages: C, Haskell, Go, C++14, JAVA, C#, D, Go, Rust, Ruby,
+	//            Python3, JavaScript, Haskell, Scala, PHP, OCaml, Kotlin
 	case "c":
 		language = "C"
 	case "hs":
@@ -48,6 +50,28 @@ func (n *Nvimutil) CurrentBufferFileType() (string, error) {
 		language = "Go"
 	case "cpp":
 		language = "C++14"
+	case "java":
+		language = "JAVA"
+	case "cs":
+		language = "C#"
+	case "d":
+		language = "D"
+	case "rs":
+		language = "Rust"
+	case "rb":
+		language = "Ruby"
+	case "py":
+		language = "Python3"
+	case "js":
+		language = "JavaScript"
+	case "scala":
+		language = "Scala"
+	case "php":
+		language = "PHP"
+	case "ml":
+		language = "OCaml"
+	case "kt":
+		language = "Kotlin"
 	default:
 		if dotName == "" {
 			return "", fmt.Errorf("cannot identify file type")
