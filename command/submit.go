@@ -52,11 +52,6 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 		return err
 	}
 
-	mes, err := stat.CheckAC()
-	if err != nil {
-		return err
-	}
-
 	buf, err := v.CurrentBuffer()
 	if err != nil {
 		return err
