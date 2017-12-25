@@ -12,12 +12,9 @@ AOJ client by NeoVim
 
 ### Install 
 
-1. build
+1. get
 ``` sh
 $ go get github.com/NoahOrberg/diesirae.nvim
-$ cd $GOPATH/src/github.com/NoahOrberg/diesirae.nvim/
-$ glide install
-$ go install
 ```
 
 2. write in your `init.vim` (or `.vimrc`)
