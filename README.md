@@ -76,3 +76,14 @@ or use `<C-d>s` in normal mode
 ``` vim
 :AojStatusList
 ```
+
+### AojTrial
+
+- Try Sample Input/Output
+  - It is the same as using `AojSubmit`
+
+- But It is not recorded on the AOJ server
+
+```
+:AojTrial
+```
