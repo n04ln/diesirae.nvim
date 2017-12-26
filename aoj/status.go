@@ -109,7 +109,7 @@ RETRY:
 func getStatusByJudgeId(cookie string, judgeId int64) (*gentleman.Response, error) {
 	conf := config.GetConfig()
 	cli := gentleman.New()
-	cli.URL(conf.Endpoint)
+	cli.URL(conf.API)
 
 	req := cli.Request()
 	req.Method("GET")
@@ -141,7 +141,7 @@ func getRecentSubmissionRecords(cookie string) ([]recentSubmission, error) {
 	conf := config.GetConfig()
 
 	cli := gentleman.New()
-	cli.URL(conf.Endpoint)
+	cli.URL(conf.API)
 
 	req := cli.Request()
 	req.Method("GET")

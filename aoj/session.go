@@ -11,7 +11,7 @@ func Session(id, rawPassword string) (string, error) {
 	conf := config.GetConfig()
 
 	cli := gentleman.New()
-	cli.URL(conf.Endpoint)
+	cli.URL(conf.API)
 
 	req := cli.Request()
 	req.Method("POST")
@@ -41,7 +41,7 @@ func IsAliveSession(cookie string) bool {
 	conf := config.GetConfig()
 
 	cli := gentleman.New()
-	cli.URL(conf.Endpoint)
+	cli.URL(conf.API)
 
 	req := cli.Request()
 	req.Method("GET")

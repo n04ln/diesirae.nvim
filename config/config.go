@@ -5,7 +5,8 @@ import (
 )
 
 type AOJConfig struct {
-	Endpoint         string `default:"https://judgeapi.u-aizu.ac.jp"`
+	API              string `default:"https://judgeapi.u-aizu.ac.jp"`
+	DataAPI          string `default:"https://judgedat.u-aizu.ac.jp"`
 	ResultBufferName string `default:"AOJ Status"`
 	Mode             string `default:"release"`
 	ID               string `default:""`
@@ -17,7 +18,7 @@ var conf AOJConfig
 func init() {
 	_ = envconfig.Process("aoj", &conf)
 	// NOTE: not yet set Variable
-	conf.Endpoint = "https://judgeapi.u-aizu.ac.jp"
+	conf.API = "https://judgeapi.u-aizu.ac.jp"
 }
 
 func GetConfig() AOJConfig {

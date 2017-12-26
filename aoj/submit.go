@@ -17,7 +17,7 @@ func Submit(cookie, problemId, language, sourceCode string) (string, error) {
 	conf := config.GetConfig()
 
 	cli := gentleman.New()
-	cli.URL(conf.Endpoint)
+	cli.URL(conf.API)
 
 	req := cli.Request()
 	req.Method("POST")
