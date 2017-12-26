@@ -2,7 +2,11 @@ package command
 
 import (
 	"errors"
+	"io"
+	"io/ioutil"
 	"net/url"
+	"os"
+	"os/exec"
 
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
 	"github.com/NoahOrberg/diesirae.nvim/config"
@@ -34,12 +38,12 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 		problemId = ids[0]
 	}
 
-	_, err = nvimutil.CurrentBufferFileType()
+	fileType, err := nvimutil.CurrentBufferFileType()
 	if err != nil {
 		return err
 	}
 
-	_, err = nvimutil.GetContentFromCurrentBuffer()
+	sourceCode, err := nvimutil.GetContentFromCurrentBuffer()
 	if err != nil {
 		return err
 	}
@@ -48,6 +52,50 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 	samples, err := aoj.GetSampleInputOutput(problemId)
 	if err != nil {
 		return err
+	}
+
+	// 実行
+	// TODO: とりあえずGoだけ
+	switch fileType {
+	case "Go":
+		fp, err := ioutil.TempFile("", "diesirae")
+		if err != nil {
+			return err
+		}
+		defer fp.Close()
+		defer os.Remove(fp.Name())
+		defer os.Remove(fp.Name() + ".go")
+
+		if err := os.Rename(fp.Name(), fp.Name()+".go"); err != nil {
+			return err
+		}
+
+		if _, err := fp.Write([]byte(sourceCode)); err != nil {
+			return err
+		}
+
+		for i, sample := range samples.Samples {
+			cmd := exec.Command("go", "run", fp.Name()+".go")
+			stdin, err := cmd.StdinPipe()
+			if err != nil {
+				return err
+			}
+			_, err = io.WriteString(stdin, sample.Input)
+			if err != nil {
+				return err
+			}
+			err = stdin.Close()
+			if err != nil {
+				return err
+			}
+			out, err := cmd.Output()
+			if err != nil {
+				return err
+			}
+			samples.Samples[i].Actual = string(out)
+		}
+	default:
+		return errors.New("only support Golang :)")
 	}
 
 	// ScratchBufferを別ウィンドウで開いていればいいが、開かれていない場合などの処理

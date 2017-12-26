@@ -14,6 +14,7 @@ type SampleInputoutput struct {
 	Serial    int    `json:"serial"`
 	Input     string `json:"in"`
 	Output    string `json:"out"`
+	Actual    string
 }
 
 type Samples struct {
@@ -21,10 +22,25 @@ type Samples struct {
 }
 
 func (s *Samples) String() string {
-	temp := "Serial %d:\nInput:\n%s===\nOutput:\n%s==="
+	if len(s.Samples) == 0 {
+		return "no test cases"
+	}
+
+	temp := "Serial %d:\nInput:\n%s===\nOutput:\n%s===\nActual:\n%s===\n"
 	var res string
-	for _, s := range s.Samples {
-		res += fmt.Sprintf(temp, s.Serial, s.Input, s.Output)
+	for _, ss := range s.Samples {
+		res += fmt.Sprintf(temp, ss.Serial, ss.Input, ss.Output, ss.Actual)
+	}
+
+	for i, ss := range s.Samples {
+		if ss.Actual != ss.Output {
+			res = "Wrong Answer...\n===" + res
+			break
+		}
+
+		if i+1 == len(s.Samples) {
+			res = "All cases AC!\n===" + res
+		}
 	}
 
 	return res
