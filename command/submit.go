@@ -62,6 +62,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 
 	a.SetStatusByBuffer(buf, stat)
 
+	// ScratchBufferを別ウィンドウで開いていればいいが、開かれていない場合などの処理
 	var opened bool
 	var scratch *nvim.Buffer
 	conf := config.GetConfig()
