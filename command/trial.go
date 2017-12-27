@@ -5,7 +5,6 @@ import (
 	"net/url"
 
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
-	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
 	"github.com/neovim/go-client/nvim"
 )
@@ -55,41 +54,10 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 		return err
 	}
 
-	// ScratchBufferを別ウィンドウで開いていればいいが、開かれていない場合などの処理
-	var opened bool
-	var scratch *nvim.Buffer
-	conf := config.GetConfig()
-	if a.ScratchBuffer == nil {
-		scratch, err = nvimutil.NewScratchBuffer(conf.ResultBufferName)
-		a.ScratchBuffer = scratch
-		opened = true
-	} else {
-		scratch = a.ScratchBuffer
-	}
-
-	nvimutil.SetContentToBuffer(*scratch, samples.String())
-
-	winls, err := nvimutil.GetWindowList()
-	if err != nil {
+	// よしなにScratchBufferに表示
+	if err := a.showScratchBuffer(nvimutil, samples); err != nil {
 		return err
 	}
 
-	if !opened {
-		for _, bufname := range winls {
-			if bufname == conf.ResultBufferName {
-				opened = true
-				break
-			}
-		}
-	}
-
-	if !opened {
-		nvimutil.SplitOpenBuffer(*scratch)
-	}
-
 	return nil
-}
-
-func showScratchBuffer() error {
-
 }
