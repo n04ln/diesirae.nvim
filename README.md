@@ -2,7 +2,7 @@
 
 ![](https://travis-ci.org/NoahOrberg/diesirae.nvim.svg?branch=master)
 
-AOJ client by NeoVim  
+AOJ client for NeoVim  
 
 ## How to install
 ### Require
@@ -33,7 +33,7 @@ $ export AOJ_ID=xxxxxxxx
 $ export AOJ_RAWPASSWORD=yyyyyyyy
 ```
 
-diesirae.nvim provides 5 commands 
+diesirae.nvim provides 6 commands 
 
 ### AojSelf
 - Check session
@@ -82,9 +82,12 @@ or use `<C-d>s` in normal mode
 
 - Try Sample Input/Output
   - It is the same as using `AojSubmit`
+  - Currently, only support `Golang` and `C++14`
 
 - But It is not recorded on the AOJ server
 
 ```
 :AojTrial
 ```
+
+or use `<C-d>t` in normal mode

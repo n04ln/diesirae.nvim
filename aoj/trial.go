@@ -86,7 +86,7 @@ func (samples *Samples) ExecSamples(fileType, sourceCode string) (*string, error
 	var buildcommands []string
 	var runcommands []string
 	switch fileType {
-	// TODO: runcommands, buildcommandsは後々vimscriptで設定できるようにする
+	// TODO: runcommands, buildcommandsは後々vimscriptで設定できるようにする(でもAOJの環境では決められたコマンドなので気にしなくて良いかも？)
 	case "Go":
 		dot = ".go"
 		buildcommands = []string{
