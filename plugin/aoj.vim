@@ -19,3 +19,4 @@ call remote#host#RegisterPlugin('diesirae.nvim', '0', [
 \ ])
 
 nnoremap <silent><C-d>s :AojSubmit<CR>
+nnoremap <silent><C-d>t :AojTrial<CR>
