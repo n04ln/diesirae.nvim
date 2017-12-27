@@ -56,6 +56,46 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 
 	// 実行
 	// TODO: とりあえずGoだけ
+	if err := execSamples(fileType, sourceCode, samples); err != nil {
+		return err
+	}
+
+	// ScratchBufferを別ウィンドウで開いていればいいが、開かれていない場合などの処理
+	var opened bool
+	var scratch *nvim.Buffer
+	conf := config.GetConfig()
+	if a.ScratchBuffer == nil {
+		scratch, err = nvimutil.NewScratchBuffer(conf.ResultBufferName)
+		a.ScratchBuffer = scratch
+		opened = true
+	} else {
+		scratch = a.ScratchBuffer
+	}
+
+	nvimutil.SetContentToBuffer(*scratch, samples.String())
+
+	winls, err := nvimutil.GetWindowList()
+	if err != nil {
+		return err
+	}
+
+	if !opened {
+		for _, bufname := range winls {
+			if bufname == conf.ResultBufferName {
+				opened = true
+				break
+			}
+		}
+	}
+
+	if !opened {
+		nvimutil.SplitOpenBuffer(*scratch)
+	}
+
+	return nil
+}
+
+func execSamples(fileType, sourceCode string, samples *aoj.Samples) error {
 	switch fileType {
 	case "Go":
 		fp, err := ioutil.TempFile("", "diesirae")
@@ -96,38 +136,6 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 		}
 	default:
 		return errors.New("only support Golang :)")
-	}
-
-	// ScratchBufferを別ウィンドウで開いていればいいが、開かれていない場合などの処理
-	var opened bool
-	var scratch *nvim.Buffer
-	conf := config.GetConfig()
-	if a.ScratchBuffer == nil {
-		scratch, err = nvimutil.NewScratchBuffer(conf.ResultBufferName)
-		a.ScratchBuffer = scratch
-		opened = true
-	} else {
-		scratch = a.ScratchBuffer
-	}
-
-	nvimutil.SetContentToBuffer(*scratch, samples.String())
-
-	winls, err := nvimutil.GetWindowList()
-	if err != nil {
-		return err
-	}
-
-	if !opened {
-		for _, bufname := range winls {
-			if bufname == conf.ResultBufferName {
-				opened = true
-				break
-			}
-		}
-	}
-
-	if !opened {
-		nvimutil.SplitOpenBuffer(*scratch)
 	}
 
 	return nil
