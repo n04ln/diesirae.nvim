@@ -62,8 +62,8 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 		if err != nil {
 			return err
 		}
-		defer fp.Close()
 		defer os.Remove(fp.Name())
+		defer fp.Close()
 		defer os.Remove(fp.Name() + ".go")
 
 		if err := os.Rename(fp.Name(), fp.Name()+".go"); err != nil {
