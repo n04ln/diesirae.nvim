@@ -1,6 +1,8 @@
 package command
 
 import (
+	"errors"
+
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
 	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
@@ -15,7 +17,8 @@ func (a *AOJ) Self(v *nvim.Nvim, args []string) error {
 	nvimutil := nvimutil.New(v)
 
 	if ok := aoj.IsAliveSession(a.Cookie); !ok {
-		nvimutil.Log("session not exists")
+		nvimutil.Log("session not exists. you should execute :AojSession")
+		a.IsValidCookie = false
 		return nil
 	}
 	nvimutil.Log("session exists")
@@ -35,17 +38,29 @@ func (a *AOJ) Session(v *nvim.Nvim, args []string) error {
 		return nil
 	}
 
-	if cookie, err := reconnectSession(); err != nil {
-		a.Cookie = cookie
-		nvimutil.Log("session reconnect!")
+	cookie, err := reconnectSession()
+	if err != nil {
+		a.IsValidCookie = false
+		nvimutil.Log("session cannot reconnect...")
 		return nil
 	}
 
+	a.Cookie = cookie
+	a.IsValidCookie = true
+	nvimutil.Log("session reconnect!")
 	return nil
 }
 
 func reconnectSession() (string, error) {
 	conf := config.GetConfig()
 
-	return aoj.Session(conf.ID, conf.RawPassword)
+	cookie, err := aoj.Session(conf.ID, conf.RawPassword)
+	if err != nil {
+		return "", err
+	}
+	if len(cookie) == 0 {
+		return "", errors.New("session is nothing")
+	}
+
+	return cookie, nil
 }

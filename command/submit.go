@@ -12,6 +12,9 @@ import (
 // Vim-Command definition:
 // Exコマンドの第一引数で問題のタイトルを指定する。
 func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
+	if a.IsValidCookie == false {
+		return errors.New("you should execute :AojSession")
+	}
 	defer a.panicLog(v)
 
 	nvimutil := nvimutil.New(v)

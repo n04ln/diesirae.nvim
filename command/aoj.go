@@ -15,6 +15,7 @@ type AOJ struct {
 	SubmittedStatuses  map[nvim.Buffer]([]*aoj.SubmissionStatus) // NOTE: 提出したとき、あとからそれを確認できる用にするため、キーをバッファ番号にして確認用Tokenを保存する
 	ScratchBuffer      *nvim.Buffer                              // NOTE: Statusなどを吐く
 	DebugScratchBuffer *nvim.Buffer                              // NOTE: debug用. panicの情報などを吐く
+	IsValidCookie      bool
 }
 
 func NewAOJ() (*AOJ, error) {
@@ -22,13 +23,17 @@ func NewAOJ() (*AOJ, error) {
 
 	cookie, err := aoj.Session(conf.ID, conf.RawPassword)
 	if err != nil {
-		return nil, err
+		return &AOJ{
+			Config:            conf,
+			SubmittedStatuses: map[nvim.Buffer]([]*aoj.SubmissionStatus){},
+		}, err
 	}
 
 	return &AOJ{
 		Cookie:            cookie,
 		Config:            conf,
 		SubmittedStatuses: map[nvim.Buffer]([]*aoj.SubmissionStatus){},
+		IsValidCookie:     true,
 	}, nil
 }
 

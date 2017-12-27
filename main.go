@@ -6,10 +6,7 @@ import (
 )
 
 func main() {
-	a, err := command.NewAOJ()
-	if err != nil {
-		panic("cannot use session")
-	}
+	a, _ := command.NewAOJ()
 
 	plugin.Main(func(p *plugin.Plugin) error {
 		p.HandleCommand(&plugin.CommandOptions{Name: "AojSubmit"}, a.SubmitAndCheckStatus)
