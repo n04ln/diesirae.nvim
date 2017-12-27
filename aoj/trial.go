@@ -129,7 +129,7 @@ func (samples *Samples) ExecSamples(fileType, sourceCode string) (*string, error
 	_, err = exec.Command(buildcommands[0], buildcommands[1:]...).Output()
 	if err != nil {
 		errStr := err.Error()
-		return &errStr, err
+		return &errStr, ErrCompileError
 	}
 
 	for i, sample := range samples.Samples {
