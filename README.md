@@ -7,6 +7,7 @@ AOJ client by NeoVim
 ## How to install
 ### Require
 
+- NeoVim (>=0.2.1)
 - go (>=1.8)
 - glide
 
