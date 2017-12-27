@@ -14,6 +14,8 @@ import (
 	"github.com/h2non/gentleman"
 )
 
+var ErrCompileError = errors.New("Compile Error. check your source code.")
+
 type SampleInputoutput struct {
 	ProblemID string `json:"problemId"`
 	Serial    int    `json:"serial"`
@@ -39,63 +41,64 @@ func (s *Samples) String() string {
 
 	for i, ss := range s.Samples {
 		if ss.Actual != ss.Output {
-			res = "Wrong Answer...\n===" + res
+			res = "Wrong Answer...\n Don't worry! this is testing sample I/O!\n===" + res
 			break
 		}
 
 		if i+1 == len(s.Samples) {
-			res = "All cases AC!\n===" + res
+			res = "All cases AC!\n Good Job!\n===" + res
 		}
 	}
 
 	return res
 }
 
-func (samples *Samples) ExecSamples(fileType, sourceCode string) error {
+func (samples *Samples) ExecSamples(fileType, sourceCode string) (*string, error) {
 	// TODO: とりあえずGoだけ
 	switch fileType {
 	case "Go":
 		fp, err := ioutil.TempFile("", "diesirae")
 		if err != nil {
-			return err
+			return nil, err
 		}
 		defer os.Remove(fp.Name())
 		defer fp.Close()
 		defer os.Remove(fp.Name() + ".go")
 
 		if err := os.Rename(fp.Name(), fp.Name()+".go"); err != nil {
-			return err
+			return nil, err
 		}
 
 		if _, err := fp.Write([]byte(sourceCode)); err != nil {
-			return err
+			return nil, err
 		}
 
 		for i, sample := range samples.Samples {
 			cmd := exec.Command("go", "run", fp.Name()+".go")
 			stdin, err := cmd.StdinPipe()
 			if err != nil {
-				return err
+				return nil, err
 			}
 			_, err = io.WriteString(stdin, sample.Input)
 			if err != nil {
-				return err
+				return nil, err
 			}
 			err = stdin.Close()
 			if err != nil {
-				return err
+				return nil, err
 			}
-			out, err := cmd.Output()
+			out, err := cmd.CombinedOutput()
 			if err != nil {
-				return err
+				errString := err.Error()
+				return &errString, ErrCompileError
 			}
 			samples.Samples[i].Actual = string(out)
 		}
 	default:
-		return errors.New("only support Golang :)")
+		return nil, errors.New("only support Golang :)")
 	}
 
-	return nil
+	return nil, nil
 }
 
 func GetSampleInputOutput(problemId string) (*Samples, error) {

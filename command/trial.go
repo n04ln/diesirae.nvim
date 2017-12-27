@@ -9,6 +9,14 @@ import (
 	"github.com/neovim/go-client/nvim"
 )
 
+type CompileError struct {
+	s string
+}
+
+func (c *CompileError) String() string {
+	return "CompileError:\n" + c.s
+}
+
 // Vim-Command definition:
 func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 	defer a.panicLog(v)
@@ -50,7 +58,19 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 	}
 
 	// 実行
-	if err := samples.ExecSamples(fileType, sourceCode); err != nil {
+	if output, err := samples.ExecSamples(fileType, sourceCode); err != nil {
+		if err == aoj.ErrCompileError {
+			if output == nil {
+				*output = "unexpected error"
+			}
+
+			// コンパイルエラーなので、その旨をScratchBuffer経由で報告する
+			if err := a.showScratchBuffer(nvimutil, &CompileError{s: *output}); err != nil {
+				return err
+			}
+			return nil
+		}
+
 		return err
 	}
 

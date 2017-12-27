@@ -56,7 +56,7 @@ func (stat *SubmissionStatus) String() string {
 		messages = append(messages, fmt.Sprintf("UserOutput: %v", stat.UserOutput))
 	}
 
-	return strings.Join(messages, "\n")
+	return "Submission result:\n" + strings.Join(messages, "\n")
 }
 
 func (s *SubmissionStatus) CheckAC() (string, error) {
