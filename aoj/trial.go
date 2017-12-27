@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/NoahOrberg/diesirae.nvim/util"
@@ -53,49 +54,110 @@ func (s *Samples) String() string {
 	return res
 }
 
+func replaceBuildCommands(bc []string, bin, source string) []string {
+	res := make([]string, 0, len(bc))
+	for _, b := range bc {
+		res = append(res, b)
+	}
+
+	targets := []string{
+		"*bin*",
+		"*source*",
+	}
+
+	replacements := []string{
+		bin,
+		source,
+	}
+
+	for i := 0; i < len(bc); i++ {
+		for j := 0; j < len(targets); j++ {
+			if targets[j] == res[i] {
+				res[i] = replacements[j]
+			}
+		}
+	}
+
+	return res
+}
+
 func (samples *Samples) ExecSamples(fileType, sourceCode string) (*string, error) {
-	// TODO: とりあえずGoだけ
+	var dot string
+	var buildcommands []string
+	var runcommands []string
 	switch fileType {
+	// TODO: runcommands, buildcommandsは後々vimscriptで設定できるようにする
 	case "Go":
-		fp, err := ioutil.TempFile("", "diesirae")
+		dot = ".go"
+		buildcommands = []string{
+			"go", "build", "-o", "*bin*", "*source*",
+		}
+		runcommands = []string{
+			"*bin*",
+		}
+	case "C++14":
+		dot = ".cpp"
+		buildcommands = []string{
+			"g++", "-o", "*bin*", "*source*",
+		}
+		runcommands = []string{
+			"*bin*",
+		}
+	default:
+		return nil, fmt.Errorf("unsupported language: %s", fileType)
+	}
+
+	// tempfile用dir作成
+	dir, err := ioutil.TempDir("", "diesirae")
+	if err != nil {
+		return nil, err
+	}
+	defer os.RemoveAll(dir) // clean up
+
+	// tempfile
+	tmpfilepath := filepath.Join(dir, "tmpfile"+dot)
+	if err := ioutil.WriteFile(tmpfilepath, []byte(sourceCode), 0666); err != nil {
+		return nil, err
+	}
+
+	// build tempfile
+	binpath := filepath.Join(dir, "tmp")
+	buildcommands = replaceBuildCommands(buildcommands, binpath, tmpfilepath)
+	if len(buildcommands) < 2 {
+		return nil, errors.New("invalid commands")
+	}
+	_, err = exec.Command(buildcommands[0], buildcommands[1:]...).Output()
+	if err != nil {
+		errStr := err.Error()
+		return &errStr, err
+	}
+
+	for i, sample := range samples.Samples {
+		// run tempfile within Stdin
+		var cmd *exec.Cmd
+		runcommands = replaceBuildCommands(runcommands, binpath, tmpfilepath)
+		if len(runcommands) < 2 {
+			if len(runcommands) == 0 {
+				return nil, errors.New("invalid commands")
+			}
+			cmd = exec.Command(runcommands[0])
+		} else {
+			cmd = exec.Command(runcommands[0], runcommands[1:]...)
+		}
+		if cmd == nil {
+			return nil, errors.New("invalid commands")
+		}
+		stdin, err := cmd.StdinPipe()
 		if err != nil {
 			return nil, err
 		}
-		defer os.Remove(fp.Name())
-		defer fp.Close()
-		defer os.Remove(fp.Name() + ".go")
-
-		if err := os.Rename(fp.Name(), fp.Name()+".go"); err != nil {
+		io.WriteString(stdin, sample.Input)
+		stdin.Close()
+		out, err := cmd.CombinedOutput()
+		if err != nil {
 			return nil, err
 		}
-
-		if _, err := fp.Write([]byte(sourceCode)); err != nil {
-			return nil, err
-		}
-
-		for i, sample := range samples.Samples {
-			cmd := exec.Command("go", "run", fp.Name()+".go")
-			stdin, err := cmd.StdinPipe()
-			if err != nil {
-				return nil, err
-			}
-			_, err = io.WriteString(stdin, sample.Input)
-			if err != nil {
-				return nil, err
-			}
-			err = stdin.Close()
-			if err != nil {
-				return nil, err
-			}
-			out, err := cmd.CombinedOutput()
-			if err != nil {
-				errString := err.Error()
-				return &errString, ErrCompileError
-			}
-			samples.Samples[i].Actual = string(out)
-		}
-	default:
-		return nil, errors.New("only support Golang :)")
+		samples.Samples[i].Actual = string(out)
 	}
 
 	return nil, nil
