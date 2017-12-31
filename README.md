@@ -60,6 +60,9 @@ diesirae.nvim provides 6 commands
 :AojSubmit
 ```
 
+#### sample
+![](./img/ds_submit_ac.gif)
+
 or use `<C-d>s` in normal mode
 
 ### AojStatus
@@ -89,5 +92,9 @@ or use `<C-d>s` in normal mode
 ```
 :AojTrial
 ```
+
+#### Sample
+![](./img/ds_trial_ac.gif)
+![](./img/ds_trial_wa.gif)
 
 or use `<C-d>t` in normal mode
