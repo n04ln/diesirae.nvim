@@ -96,7 +96,7 @@ or use `<C-d>s` in normal mode. This is interactive
 :AojTrial
 ```
 
-#### exmple
+#### example
 ![](./img/ds_trial_ac.gif)
 ![](./img/ds_trial_wa.gif)
 
