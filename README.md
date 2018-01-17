@@ -51,7 +51,7 @@ diesirae.nvim provides 6 commands
 ```
 
 ### AojSubmit
-- this is async
+- This is Async function
   - However, this is a function. not command
 - Submit source code in current buffer
   - Please enter the ProblemID or URL
@@ -61,7 +61,12 @@ diesirae.nvim provides 6 commands
 :call AojSubmit("<PROBLEM_ID_OR_URL>")
 ```
 
-or use `<C-d>s` in normal mode. It is interactive 
+or use `<C-d>s` in normal mode. This is interactive 
+
+<!--
+#### example
+![](./img/XXXXX.gif)
+-->
 
 ### AojStatus
 
@@ -91,7 +96,7 @@ or use `<C-d>s` in normal mode. It is interactive
 :AojTrial
 ```
 
-#### Sample
+#### exmple
 ![](./img/ds_trial_ac.gif)
 ![](./img/ds_trial_wa.gif)
 
