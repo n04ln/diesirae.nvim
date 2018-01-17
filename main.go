@@ -9,7 +9,7 @@ func main() {
 	a, _ := command.NewAOJ()
 
 	plugin.Main(func(p *plugin.Plugin) error {
-		p.HandleCommand(&plugin.CommandOptions{Name: "AojSubmit"}, a.SubmitAndCheckStatus)
+		p.HandleFunction(&plugin.FunctionOptions{Name: "AojSubmit"}, a.SubmitAndCheckStatus)
 		p.HandleCommand(&plugin.CommandOptions{Name: "AojTrial"}, a.Trial)
 		p.HandleCommand(&plugin.CommandOptions{Name: "AojStatus"}, a.Status)
 		p.HandleCommand(&plugin.CommandOptions{Name: "AojSelf"}, a.Self)
