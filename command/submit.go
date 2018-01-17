@@ -12,6 +12,10 @@ import (
 // Vim-Command definition:
 // Exコマンドの第一引数で問題のタイトルを指定する。
 func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
+	if len(args) != 1 {
+		return errors.New("invalid args")
+	}
+
 	if a.IsValidCookie == false {
 		return errors.New("you should execute :AojSession")
 	}
@@ -19,11 +23,8 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 
 	nvimutil := nvimutil.New(v)
 
+	input := args[0]
 	var problemId string
-	input, err := nvimutil.Input("problem id")
-	if input == "" {
-		return nil
-	}
 	// ここでは、URLでくるか、問題の題名だけでくるか、両方を受容する
 	// TODO: 変更される余地ありかもなので、ここは要観察。現行版のAOJはid=XXXXでクエリパラメータ渡してるのでいいが、他の場合は要修正。
 	if u, err := url.ParseRequestURI(input); err != nil {
