@@ -10,11 +10,3 @@ function! diesirae#getWindowList() abort
 
     return res
 endfunction
-
-" diesirae#aojSubmit:
-"  void
-"   submission function within `input()`
-function! diesirae#aojSubmit() abort
-    let pid = input("problem id: ")
-    AojSubmit(pid)
-endfunction
