@@ -51,8 +51,8 @@ diesirae.nvim provides 6 commands
 ```
 
 ### AojSubmit
-- This is Async function
-  - However, this is a function. not command
+- This is Asynchronous
+  - And this is function. not command
 - Submit source code in current buffer
   - Please enter the ProblemID or URL
 - The result(status) is written in a scratch buffer
@@ -61,7 +61,8 @@ diesirae.nvim provides 6 commands
 :call AojSubmit("<PROBLEM_ID_OR_URL>")
 ```
 
-or use `<C-d>s` in normal mode. This is interactive 
+or use `<C-d>s` in normal mode. 
+This is interactive(`<C-d>s` is `:call AojSubmit(input("problem id: "))`) 
 
 <!--
 #### example

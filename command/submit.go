@@ -9,8 +9,8 @@ import (
 	"github.com/neovim/go-client/nvim"
 )
 
-// Vim-Command definition:
-// Exコマンドの第一引数で問題のタイトルを指定する。
+// Vim-Function definition:
+//   第一引数で問題のタイトルを指定する。
 func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	if len(args) != 1 {
 		return errors.New("invalid args")
