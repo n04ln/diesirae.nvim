@@ -38,10 +38,14 @@ type SubmissionStatus struct {
 }
 
 func (stat *SubmissionStatus) String() string {
+	isAllCasesAC := true
 	caseVerdictTemp := `testcase: %v, Memory: %vkB, CpuTime: %vs, Status: %v`
 	messages := make([]string, 0, len(stat.CaseVerdicts)+3)
 	for _, cv := range stat.CaseVerdicts {
 		messages = append(messages, fmt.Sprintf(caseVerdictTemp, cv.Label, cv.Memory, cv.CpuTime, cv.Status))
+		if cv.Status != "AC" {
+			isAllCasesAC = false
+		}
 	}
 
 	if stat.CompileError != "" {
@@ -56,7 +60,12 @@ func (stat *SubmissionStatus) String() string {
 		messages = append(messages, fmt.Sprintf("UserOutput: %v", stat.UserOutput))
 	}
 
-	return "Submission result:\n" + strings.Join(messages, "\n")
+	var comment string
+	if isAllCasesAC {
+		comment = "\ncongratulations"
+	}
+
+	return "Submission result:\n" + strings.Join(messages, "\n") + comment
 }
 
 func (s *SubmissionStatus) CheckAC() (string, error) {
