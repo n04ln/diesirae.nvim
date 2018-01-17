@@ -17,8 +17,6 @@ var conf AOJConfig
 
 func init() {
 	_ = envconfig.Process("aoj", &conf)
-	// NOTE: not yet set Variable
-	conf.API = "https://judgeapi.u-aizu.ac.jp"
 }
 
 func GetConfig() AOJConfig {
