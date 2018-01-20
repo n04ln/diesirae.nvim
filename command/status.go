@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
 	"github.com/neovim/go-client/nvim"
 )
 
@@ -13,7 +12,7 @@ import (
 func (a *AOJ) Status(v *nvim.Nvim, args []string) error {
 	defer a.panicLog(v)
 
-	nvimutil := nvimutil.New(v)
+	nimvle := nimvleNew(v)
 
 	buf, err := v.CurrentBuffer()
 	if err != nil {
@@ -32,15 +31,15 @@ func (a *AOJ) Status(v *nvim.Nvim, args []string) error {
 
 	var scratch *nvim.Buffer
 	if a.ScratchBuffer == nil {
-		scratch, err = nvimutil.NewScratchBuffer("AOJ Status")
+		scratch, err = nimvle.NewScratchBuffer("AOJ Status")
 		a.ScratchBuffer = scratch
 	} else {
 		scratch = a.ScratchBuffer
 	}
 
-	nvimutil.SetContentToBuffer(*scratch, stat.String())
+	nimvle.SetContentToBuffer(*scratch, stat.String())
 
-	nvimutil.Log(mes)
+	nimvle.Log(mes)
 
 	return nil
 }
@@ -55,7 +54,7 @@ func (a *AOJ) Status(v *nvim.Nvim, args []string) error {
 func (a *AOJ) StatusList(v *nvim.Nvim, args []string) error {
 	defer a.panicLog(v)
 
-	nvimutil := nvimutil.New(v)
+	nimvle := nimvleNew(v)
 
 	var output string
 	for b, status := range a.SubmittedStatuses {
@@ -70,7 +69,7 @@ func (a *AOJ) StatusList(v *nvim.Nvim, args []string) error {
 		return errors.New("not yet submitted")
 	}
 
-	err := nvimutil.SetContentToBuffer(*a.ScratchBuffer, output)
+	err := nimvle.SetContentToBuffer(*a.ScratchBuffer, output)
 	if err != nil {
 		return err
 	}

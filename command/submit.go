@@ -2,12 +2,57 @@ package command
 
 import (
 	"errors"
+	"fmt"
 	"net/url"
 
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
-	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
 	"github.com/neovim/go-client/nvim"
 )
+
+func transLanguage(ex string) (string, error) {
+	var language string
+	switch ex {
+	// Languages: C, Haskell, Go, C++14, JAVA, C#, D, Go, Rust, Ruby,
+	//            Python3, JavaScript, Haskell, Scala, PHP, OCaml, Kotlin
+	case "c":
+		language = "C"
+	case "hs":
+		language = "Haskell"
+	case "go":
+		language = "Go"
+	case "cpp":
+		language = "C++14"
+	case "java":
+		language = "JAVA"
+	case "cs":
+		language = "C#"
+	case "d":
+		language = "D"
+	case "rs":
+		language = "Rust"
+	case "rb":
+		language = "Ruby"
+	case "py":
+		language = "Python3"
+	case "js":
+		language = "JavaScript"
+	case "scala":
+		language = "Scala"
+	case "php":
+		language = "PHP"
+	case "ml":
+		language = "OCaml"
+	case "kt":
+		language = "Kotlin"
+	default:
+		if ex == "" {
+			return "", fmt.Errorf("cannot identify file type")
+		}
+		return "", fmt.Errorf("cannot submit this file: .%s", ex)
+	}
+
+	return language, nil
+}
 
 // Vim-Function definition:
 //   第一引数で問題のタイトルを指定する。
@@ -21,7 +66,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	}
 	defer a.panicLog(v)
 
-	nvimutil := nvimutil.New(v)
+	nimvle := nimvleNew(v)
 
 	input := args[0]
 	var problemId string
@@ -38,12 +83,17 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 		problemId = ids[0]
 	}
 
-	language, err := nvimutil.CurrentBufferFileType()
+	extension, err := nimvle.CurrentBufferFilenameExtension()
 	if err != nil {
 		return err
 	}
 
-	sourceCode, err := nvimutil.GetContentFromCurrentBuffer()
+	language, err := transLanguage(extension)
+	if err != nil {
+		return err
+	}
+
+	sourceCode, err := nimvle.GetContentFromCurrentBuffer()
 	if err != nil {
 		return err
 	}
@@ -66,9 +116,5 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	a.SetStatusByBuffer(buf, stat)
 
 	// よしなにScratchBufferに表示
-	if err := a.showScratchBuffer(nvimutil, stat); err != nil {
-		return err
-	}
-
-	return nil
+	return nimvle.ShowScratchBuffer(*a.ScratchBuffer, stat)
 }

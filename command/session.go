@@ -5,7 +5,6 @@ import (
 
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
 	"github.com/NoahOrberg/diesirae.nvim/config"
-	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
 	"github.com/neovim/go-client/nvim"
 )
 
@@ -14,14 +13,14 @@ import (
 func (a *AOJ) Self(v *nvim.Nvim, args []string) error {
 	defer a.panicLog(v)
 
-	nvimutil := nvimutil.New(v)
+	nimvle := nimvleNew(v)
 
 	if ok := aoj.IsAliveSession(a.Cookie); !ok {
-		nvimutil.Log("session not exists. you should execute :AojSession")
+		nimvle.Log("session not exists. you should execute :AojSession")
 		a.IsValidCookie = false
 		return nil
 	}
-	nvimutil.Log("session exists")
+	nimvle.Log("session exists")
 
 	return nil
 }
@@ -31,23 +30,23 @@ func (a *AOJ) Self(v *nvim.Nvim, args []string) error {
 func (a *AOJ) Session(v *nvim.Nvim, args []string) error {
 	defer a.panicLog(v)
 
-	nvimutil := nvimutil.New(v)
+	nimvle := nimvleNew(v)
 
 	if ok := aoj.IsAliveSession(a.Cookie); ok {
-		nvimutil.Log("session exists")
+		nimvle.Log("session exists")
 		return nil
 	}
 
 	cookie, err := reconnectSession()
 	if err != nil {
 		a.IsValidCookie = false
-		nvimutil.Log("session cannot reconnect...")
+		nimvle.Log("session cannot reconnect...")
 		return nil
 	}
 
 	a.Cookie = cookie
 	a.IsValidCookie = true
-	nvimutil.Log("session reconnect!")
+	nimvle.Log("session reconnect!")
 	return nil
 }
 

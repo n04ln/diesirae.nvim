@@ -5,7 +5,6 @@ import (
 	"net/url"
 
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
-	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
 	"github.com/neovim/go-client/nvim"
 )
 
@@ -21,10 +20,10 @@ func (c *CompileError) String() string {
 func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 	defer a.panicLog(v)
 
-	nvimutil := nvimutil.New(v)
+	nimvle := nimvleNew(v)
 
 	var problemId string
-	input, err := nvimutil.Input("problem id")
+	input, err := nimvle.Input("problem id")
 	if input == "" {
 		return nil
 	}
@@ -41,12 +40,16 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 		problemId = ids[0]
 	}
 
-	fileType, err := nvimutil.CurrentBufferFileType()
+	extension, err := nimvle.CurrentBufferFilenameExtension()
+	if err != nil {
+		return err
+	}
+	fileType, err := transLanguage(extension)
 	if err != nil {
 		return err
 	}
 
-	sourceCode, err := nvimutil.GetContentFromCurrentBuffer()
+	sourceCode, err := nimvle.GetContentFromCurrentBuffer()
 	if err != nil {
 		return err
 	}
@@ -65,7 +68,7 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 			}
 
 			// コンパイルエラーなので、その旨をScratchBuffer経由で報告する
-			if err := a.showScratchBuffer(nvimutil, &CompileError{s: *output}); err != nil {
+			if err := nimvle.ShowScratchBuffer(*a.ScratchBuffer, &CompileError{s: *output}); err != nil {
 				return err
 			}
 			return nil
@@ -75,9 +78,5 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 	}
 
 	// よしなにScratchBufferに表示
-	if err := a.showScratchBuffer(nvimutil, samples); err != nil {
-		return err
-	}
-
-	return nil
+	return nimvle.ShowScratchBuffer(*a.ScratchBuffer, samples)
 }

@@ -5,9 +5,13 @@ import (
 
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
 	"github.com/NoahOrberg/diesirae.nvim/config"
-	"github.com/NoahOrberg/diesirae.nvim/nvimutil"
+	"github.com/NoahOrberg/nimvle.nvim/nimvle"
 	"github.com/neovim/go-client/nvim"
 )
+
+func nimvleNew(v *nvim.Nvim) *nimvle.Nimvle {
+	return nimvle.New(v, "diesirae.nvim")
+}
 
 type AOJ struct {
 	Cookie             string                                    // NOTE: ログインしたら、ここにクッキーをいれる
@@ -53,7 +57,7 @@ func (a *AOJ) GetRecentStatusByBuffer(buf nvim.Buffer) (*aoj.SubmissionStatus, b
 func (a *AOJ) panicLog(v *nvim.Nvim) {
 	// only when debug mode
 	if config.GetConfig().Mode == "debug" {
-		n := nvimutil.New(v)
+		n := nimvleNew(v)
 
 		err := recover()
 
@@ -65,44 +69,4 @@ func (a *AOJ) panicLog(v *nvim.Nvim) {
 			n.SetContentToBuffer(*a.DebugScratchBuffer, fmt.Sprintf("%v", err))
 		}
 	}
-}
-
-// ScratchBufferを別ウィンドウで開いていればいいが、開かれていない場合などの処理
-func (a *AOJ) showScratchBuffer(nvimutil *nvimutil.Nvimutil, str fmt.Stringer) error {
-	var opened bool
-	var scratch *nvim.Buffer
-	var err error
-	conf := config.GetConfig()
-	if a.ScratchBuffer == nil {
-		scratch, err = nvimutil.NewScratchBuffer(conf.ResultBufferName)
-		if err != nil {
-			return err
-		}
-		a.ScratchBuffer = scratch
-		opened = true
-	} else {
-		scratch = a.ScratchBuffer
-	}
-
-	nvimutil.SetContentToBuffer(*scratch, str.String())
-
-	winls, err := nvimutil.GetWindowList()
-	if err != nil {
-		return err
-	}
-
-	if !opened {
-		for _, bufname := range winls {
-			if bufname == conf.ResultBufferName {
-				opened = true
-				break
-			}
-		}
-	}
-
-	if !opened {
-		nvimutil.SplitOpenBuffer(*scratch)
-	}
-
-	return nil
 }
