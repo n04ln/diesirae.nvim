@@ -1,5 +1,5 @@
-hash: 3dd06c11f8c00707633cbf42059ac994c78e0dfbb40c81b62802d22d14279863
-updated: 2017-12-22T11:46:55.203928412+09:00
+hash: 934f5401838e6e5465080e2d2303891b32747a4c334d00aafcacda5ec8c0a2fa
+updated: 2018-01-21T00:49:56.682708429+09:00
 imports:
 - name: github.com/h2non/gentleman
   version: b18ebfa8f3ea4d2f620e332d7a29e55647ae729e
@@ -8,14 +8,18 @@ imports:
 - name: github.com/kelseyhightower/envconfig
   version: 462fda1f11d8cad3660e52737b8beefd27acfb3f
 - name: github.com/neovim/go-client
-  version: 11df26a7bb73a1694f64cb668d689402630a50ff
+  version: 1c2696a88048c01a46c9c6be486ee0ded23beb91
   subpackages:
   - msgpack
   - msgpack/rpc
   - nvim
   - nvim/plugin
+- name: github.com/NoahOrberg/nimvle.nvim
+  version: 3777a10e64054c3cc93970c0b598d00cca9cbe6d
+  subpackages:
+  - nimvle
 - name: golang.org/x/net
-  version: d866cfc389cec985d6fda2859936a575a55a3ab6
+  version: 5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec
   subpackages:
   - publicsuffix
 - name: gopkg.in/h2non/gentleman.v2
@@ -41,7 +45,7 @@ testImports:
 - name: github.com/k0kubun/pp
   version: e057ee7a28277be4d2af303443b6da377768181f
 - name: github.com/mattn/go-colorable
-  version: 6fcc0c1fd9b620311d821b106a400b35dc95c497
+  version: 6cc8b475d4682021d75d2cbe2bc481bec4ce98e5
 - name: github.com/mattn/go-isatty
   version: 6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c
 - name: github.com/pmezard/go-difflib
@@ -49,11 +53,11 @@ testImports:
   subpackages:
   - difflib
 - name: github.com/stretchr/testify
-  version: 2aa2c176b9dab406a6970f6a55f513e8a8c8b18f
+  version: 87b1dfb5b2fa649f52695dd9eae19abe404a4308
   subpackages:
   - assert
   - require
 - name: golang.org/x/sys
-  version: d818ba11af4465e00c1998bd3f8a55603b422290
+  version: 2c42eef0765b9837fbdab12011af7830f55f88f0
   subpackages:
   - unix

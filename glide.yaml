@@ -1,5 +1,8 @@
 package: github.com/NoahOrberg/diesirae.nvim
 import:
+- package: github.com/NoahOrberg/nimvle.nvim
+  subpackages:
+  - nimvle
 - package: github.com/h2non/gentleman
   subpackages:
   - plugins/body
