@@ -5,6 +5,7 @@ import (
 	"net/url"
 
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
+	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/neovim/go-client/nvim"
 )
 
@@ -68,15 +69,18 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 			}
 
 			// コンパイルエラーなので、その旨をScratchBuffer経由で報告する
-			if err := nimvle.ShowScratchBuffer(*a.ScratchBuffer, &CompileError{s: *output}); err != nil {
-				return err
-			}
-			return nil
+			return nimvle.ShowScratchBuffer(*a.ScratchBuffer, &CompileError{s: *output})
 		}
 
 		return err
 	}
 
 	// よしなにScratchBufferに表示
+	if a.ScratchBuffer == nil {
+		a.ScratchBuffer, err = nimvle.NewScratchBuffer(config.GetConfig().ResultBufferName)
+		if err != nil {
+			return err
+		}
+	}
 	return nimvle.ShowScratchBuffer(*a.ScratchBuffer, samples)
 }

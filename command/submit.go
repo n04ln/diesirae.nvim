@@ -6,6 +6,7 @@ import (
 	"net/url"
 
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
+	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/neovim/go-client/nvim"
 )
 
@@ -57,16 +58,18 @@ func transLanguage(ex string) (string, error) {
 // Vim-Function definition:
 //   第一引数で問題のタイトルを指定する。
 func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
+	nimvle := nimvleNew(v)
+
 	if len(args) != 1 {
+		nimvle.Log(err.Error())
 		return errors.New("invalid args")
 	}
 
 	if a.IsValidCookie == false {
+		nimvle.Log(err.Error())
 		return errors.New("you should execute :AojSession")
 	}
 	defer a.panicLog(v)
-
-	nimvle := nimvleNew(v)
 
 	input := args[0]
 	var problemId string
@@ -77,6 +80,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	} else {
 		ids, ok := u.Query()["id"]
 		if !ok || len(ids) == 0 {
+			nimvle.Log(err.Error())
 			return errors.New("no such id")
 		}
 
@@ -85,21 +89,25 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 
 	extension, err := nimvle.CurrentBufferFilenameExtension()
 	if err != nil {
+		nimvle.Log(err.Error())
 		return err
 	}
 
 	language, err := transLanguage(extension)
 	if err != nil {
+		nimvle.Log(err.Error())
 		return err
 	}
 
 	sourceCode, err := nimvle.GetContentFromCurrentBuffer()
 	if err != nil {
+		nimvle.Log(err.Error())
 		return err
 	}
 
 	token, err := aoj.Submit(a.Cookie, problemId, language, sourceCode)
 	if err != nil {
+		nimvle.Log(err.Error())
 		return err
 	}
 
@@ -110,11 +118,19 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 
 	buf, err := v.CurrentBuffer()
 	if err != nil {
+		nimvle.Log(err.Error())
 		return err
 	}
 
 	a.SetStatusByBuffer(buf, stat)
 
 	// よしなにScratchBufferに表示
+	if a.ScratchBuffer == nil {
+		a.ScratchBuffer, err = nimvle.NewScratchBuffer(config.GetConfig().ResultBufferName)
+		if err != nil {
+			nimvle.Log(err.Error())
+			return err
+		}
+	}
 	return nimvle.ShowScratchBuffer(*a.ScratchBuffer, stat)
 }
