@@ -7,6 +7,7 @@ import (
 
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
 	"github.com/NoahOrberg/diesirae.nvim/config"
+	"github.com/NoahOrberg/diesirae.nvim/util"
 	"github.com/neovim/go-client/nvim"
 )
 
@@ -61,12 +62,12 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	nimvle := nimvleNew(v)
 
 	if len(args) != 1 {
-		nimvle.Log(err.Error())
+		nimvle.Log(util.ErrInvalidArgs.Error())
 		return errors.New("invalid args")
 	}
 
 	if a.IsValidCookie == false {
-		nimvle.Log(err.Error())
+		nimvle.Log(util.ErrInvalidCookie.Error())
 		return errors.New("you should execute :AojSession")
 	}
 	defer a.panicLog(v)

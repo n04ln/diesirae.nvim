@@ -62,7 +62,9 @@ func (stat *SubmissionStatus) String() string {
 
 	var comment string
 	if isAllCasesAC {
-		comment = "\ncongratulations"
+		comment = "\n✅ CONGRATULATION!"
+	} else {
+		comment = "\n❌ NOT BE ACCEPTED!"
 	}
 
 	return "Submission result:\n" + strings.Join(messages, "\n") + comment
