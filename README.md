@@ -85,7 +85,7 @@ This is interactive(`<C-d>s` is `:call AojSubmit(input("problem id: "))`)
 :AojStatusList
 ```
 
-### AojTrial
+### AojRunSample
 
 - Try Sample Input/Output
   - It is the same as using `AojSubmit`
@@ -94,7 +94,7 @@ This is interactive(`<C-d>s` is `:call AojSubmit(input("problem id: "))`)
 - But It is not recorded on the AOJ server
 
 ```
-:AojTrial
+:call AojRunSample("<PROBLEM_ID_OR_URL>")
 ```
 
 #### example
