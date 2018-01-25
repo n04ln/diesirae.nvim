@@ -10,7 +10,7 @@ func main() {
 
 	plugin.Main(func(p *plugin.Plugin) error {
 		p.HandleFunction(&plugin.FunctionOptions{Name: "AojSubmit"}, a.SubmitAndCheckStatus)
-		p.HandleCommand(&plugin.CommandOptions{Name: "AojTrial"}, a.Trial)
+		p.HandleFunction(&plugin.FunctionOptions{Name: "AojRunTest"}, a.Trial)
 		p.HandleCommand(&plugin.CommandOptions{Name: "AojStatus"}, a.Status)
 		p.HandleCommand(&plugin.CommandOptions{Name: "AojSelf"}, a.Self)
 		p.HandleCommand(&plugin.CommandOptions{Name: "AojSession"}, a.Session)
