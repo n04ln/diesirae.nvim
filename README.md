@@ -97,8 +97,11 @@ This is interactive(`<C-d>s` is `:call AojSubmit(input("problem id: "))`)
 :call AojRunSample("<PROBLEM_ID_OR_URL>")
 ```
 
-#### example
-![](./img/ds_trial_ac.gif)
-![](./img/ds_trial_wa.gif)
+or use `<C-d>t` in normal mode.
+This is interactive(`<C-d>t` is `:call AojRunSample(input("problem id: "))`) 
 
-or use `<C-d>t` in normal mode
+<!--
+#### example
+![](./img/XXXXX.gif)
+-->
+
