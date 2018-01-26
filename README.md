@@ -93,7 +93,7 @@ This is interactive(`<C-d>s` is `:call AojSubmit(input("problem id: "))`)
 
 - But It is not recorded on the AOJ server
 
-```
+``` vim
 :call AojRunSample("<PROBLEM_ID_OR_URL>")
 ```
 
