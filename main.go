@@ -11,6 +11,7 @@ func main() {
 	plugin.Main(func(p *plugin.Plugin) error {
 		p.HandleFunction(&plugin.FunctionOptions{Name: "AojSubmit"}, a.SubmitAndCheckStatus)
 		p.HandleFunction(&plugin.FunctionOptions{Name: "AojRunSample"}, a.Trial)
+		p.HandleCommand(&plugin.CommandOptions{Name: "AojDescription"}, a.Description)
 		p.HandleCommand(&plugin.CommandOptions{Name: "AojStatus"}, a.Status)
 		p.HandleCommand(&plugin.CommandOptions{Name: "AojSelf"}, a.Self)
 		p.HandleCommand(&plugin.CommandOptions{Name: "AojSession"}, a.Session)

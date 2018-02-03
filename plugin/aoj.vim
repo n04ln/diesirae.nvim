@@ -10,6 +10,7 @@ endfunction
 
 call remote#host#Register('diesirae.nvim', '0', function('s:RequireDiesIrae'))
 call remote#host#RegisterPlugin('diesirae.nvim', '0', [
+\ {'type': 'command', 'name': 'AojDescription', 'sync': 0, 'opts': {}},
 \ {'type': 'command', 'name': 'AojSelf', 'sync': 1, 'opts': {}},
 \ {'type': 'command', 'name': 'AojSession', 'sync': 1, 'opts': {}},
 \ {'type': 'command', 'name': 'AojStatus', 'sync': 1, 'opts': {}},
