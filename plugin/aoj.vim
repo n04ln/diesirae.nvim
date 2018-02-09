@@ -21,3 +21,4 @@ call remote#host#RegisterPlugin('diesirae.nvim', '0', [
 
 nnoremap <silent><C-d>s :<C-u>call AojSubmit(input("problem id: "))<CR>
 nnoremap <silent><C-d>t :<C-u>call AojRunSample(input("problem id: "))<CR>
+nnoremap <silent><C-d>d :<C-u>call AojDescription(input("problem id: "))<CR>
