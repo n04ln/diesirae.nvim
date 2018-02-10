@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"time"
 
 	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/NoahOrberg/diesirae.nvim/util"
@@ -34,7 +35,7 @@ func (s *Samples) String() string {
 		return "no test cases"
 	}
 
-	temp := "Serial %d:\nInput:\n%s===\nOutput:\n%s===\nActual:\n%s===\n"
+	temp := "Serial %d:\nInput:\n%s===\nExpected Output:\n%s===\nActual Output:\n%s===\n"
 	var res string
 	for _, ss := range s.Samples {
 		res += fmt.Sprintf(temp, ss.Serial, ss.Input, ss.Output, ss.Actual)
@@ -81,7 +82,7 @@ func replaceBuildCommands(bc []string, bin, source string) []string {
 	return res
 }
 
-func (samples *Samples) ExecSamples(fileType, sourceCode string) (*string, error) {
+func (samples *Samples) ExecSamples(fileType, sourceCode string, timeLimit int) (*string, error) {
 	var dot string
 	var buildcommands []string
 	var runcommands []string
@@ -153,11 +154,40 @@ func (samples *Samples) ExecSamples(fileType, sourceCode string) (*string, error
 		}
 		io.WriteString(stdin, sample.Input)
 		stdin.Close()
-		out, err := cmd.CombinedOutput()
-		if err != nil {
-			return nil, err
+
+		cout := make(chan string)
+		ready, latch := make(chan struct{}), make(chan struct{})
+		go func() {
+			ready <- struct{}{}
+			<-latch
+
+			// 片方しか使わない
+			bout, err := cmd.CombinedOutput()
+
+			if err != nil {
+				cout <- err.Error()
+			} else {
+				cout <- string(bout)
+			}
+		}()
+
+		<-ready
+		close(latch) // start
+
+		// timeLimitまで待機
+		time.Sleep(time.Duration(timeLimit) * time.Second)
+
+		select {
+		case out := <-cout:
+			samples.Samples[i].Actual = string(out)
+		default:
+			samples.Samples[i].Actual = "no output\n" // Nothing output
+			// 後処理
+			if err := cmd.Process.Kill(); err != nil {
+				return nil, err
+			}
 		}
-		samples.Samples[i].Actual = string(out)
+
 	}
 
 	return nil, nil

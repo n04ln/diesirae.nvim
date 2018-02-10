@@ -78,8 +78,15 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 			return
 		}
 
+		// description を取得し、時間を入手
+		desc, err := aoj.GetDescriptionByProblemId(a.Cookie, problemId)
+		if err != nil {
+			nimvle.Log(err.Error())
+			return
+		}
+
 		// 実行
-		if output, err := samples.ExecSamples(fileType, sourceCode); err != nil {
+		if output, err := samples.ExecSamples(fileType, sourceCode, desc.TimeLimit); err != nil {
 			if err == aoj.ErrCompileError {
 				if output == nil {
 					*output = "unexpected error"
