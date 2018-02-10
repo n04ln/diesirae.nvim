@@ -19,30 +19,34 @@ func (c *CompileError) String() string {
 }
 
 // Vim-Function definition:
-func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
+func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 	defer a.panicLog(v)
 	nimvle := nimvleNew(v)
 
 	if len(args) != 1 {
-		nimvle.Log(util.ErrInvalidArgs.Error())
-		return errors.New("invalid args")
+		err = util.ErrInvalidArgs
+		nimvle.Log(err.Error())
+		return
 	}
 
 	if a.IsValidCookie == false {
-		nimvle.Log(util.ErrInvalidCookie.Error())
-		return errors.New("you should execute :AojSession")
+		err = util.ErrInvalidCookie
+		nimvle.Log(err.Error())
+		return
 	}
 
 	input := args[0]
 	var problemId string
 	// ここでは、URLでくるか、問題の題名だけでくるか、両方を受容する
 	// TODO: 変更される余地ありかもなので、ここは要観察。現行版のAOJはid=XXXXでクエリパラメータ渡してるのでいいが、他の場合は要修正。
-	if u, err := url.ParseRequestURI(input); err != nil {
+	if u, err2 := url.ParseRequestURI(input); err2 != nil {
 		problemId = input
 	} else {
 		ids, ok := u.Query()["id"]
 		if !ok || len(ids) == 0 {
-			return errors.New("no such id")
+			err = errors.New("no such id")
+			nimvle.Log(err.Error())
+			return
 		}
 
 		problemId = ids[0]
@@ -50,44 +54,63 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) error {
 
 	extension, err := nimvle.CurrentBufferFilenameExtension()
 	if err != nil {
-		return err
+		nimvle.Log(err.Error())
+		return
 	}
 	fileType, err := transLanguage(extension)
 	if err != nil {
-		return err
+		nimvle.Log(err.Error())
+		return
 	}
 
 	sourceCode, err := nimvle.GetContentFromCurrentBuffer()
 	if err != nil {
-		return err
+		nimvle.Log(err.Error())
+		return
 	}
 
-	// sampleコード表示
-	samples, err := aoj.GetSampleInputOutput(problemId)
-	if err != nil {
-		return err
-	}
+	// 現状、無限に返ってこない可能性があるため並列処理に回す
+	go func() {
+		// sampleコード表示
+		samples, err := aoj.GetSampleInputOutput(problemId)
+		if err != nil {
+			nimvle.Log(err.Error())
+			return
+		}
 
-	// 実行
-	if output, err := samples.ExecSamples(fileType, sourceCode); err != nil {
-		if err == aoj.ErrCompileError {
-			if output == nil {
-				*output = "unexpected error"
+		// 実行
+		if output, err := samples.ExecSamples(fileType, sourceCode); err != nil {
+			if err == aoj.ErrCompileError {
+				if output == nil {
+					*output = "unexpected error"
+				}
+
+				// コンパイルエラーなので、その旨をScratchBuffer経由で報告する
+				err = nimvle.ShowScratchBuffer(*a.ScratchBuffer, &CompileError{s: *output})
+				if err != nil {
+					nimvle.Log(err.Error())
+					return
+				}
 			}
 
-			// コンパイルエラーなので、その旨をScratchBuffer経由で報告する
-			return nimvle.ShowScratchBuffer(*a.ScratchBuffer, &CompileError{s: *output})
+			nimvle.Log(err.Error())
+			return
 		}
 
-		return err
-	}
-
-	// よしなにScratchBufferに表示
-	if a.ScratchBuffer == nil {
-		a.ScratchBuffer, err = nimvle.NewScratchBuffer(config.GetConfig().ResultBufferName)
+		// よしなにScratchBufferに表示
+		if a.ScratchBuffer == nil {
+			a.ScratchBuffer, err = nimvle.NewScratchBuffer(config.GetConfig().ResultBufferName)
+			if err != nil {
+				nimvle.Log(err.Error())
+				return
+			}
+		}
+		err = nimvle.ShowScratchBuffer(*a.ScratchBuffer, samples)
 		if err != nil {
-			return err
+			nimvle.Log(err.Error())
+			return
 		}
-	}
-	return nimvle.ShowScratchBuffer(*a.ScratchBuffer, samples)
+	}()
+
+	return
 }
