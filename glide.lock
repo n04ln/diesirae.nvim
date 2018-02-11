@@ -1,5 +1,5 @@
 hash: 934f5401838e6e5465080e2d2303891b32747a4c334d00aafcacda5ec8c0a2fa
-updated: 2018-01-21T00:49:56.682708429+09:00
+updated: 2018-02-11T12:47:17.509673779+09:00
 imports:
 - name: github.com/h2non/gentleman
   version: b18ebfa8f3ea4d2f620e332d7a29e55647ae729e
@@ -19,7 +19,7 @@ imports:
   subpackages:
   - nimvle
 - name: golang.org/x/net
-  version: 5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec
+  version: f5dfe339be1d06f81b22525fe34671ee7d2c8904
   subpackages:
   - publicsuffix
 - name: gopkg.in/h2non/gentleman.v2
@@ -45,7 +45,7 @@ testImports:
 - name: github.com/k0kubun/pp
   version: e057ee7a28277be4d2af303443b6da377768181f
 - name: github.com/mattn/go-colorable
-  version: 6cc8b475d4682021d75d2cbe2bc481bec4ce98e5
+  version: 7dc3415be66d7cc68bf0182f35c8d31f8d2ad8a7
 - name: github.com/mattn/go-isatty
   version: 6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c
 - name: github.com/pmezard/go-difflib
@@ -53,11 +53,11 @@ testImports:
   subpackages:
   - difflib
 - name: github.com/stretchr/testify
-  version: 87b1dfb5b2fa649f52695dd9eae19abe404a4308
+  version: be8372ae8ec5c6daaed3cc28ebf73c54b737c240
   subpackages:
   - assert
   - require
 - name: golang.org/x/sys
-  version: 2c42eef0765b9837fbdab12011af7830f55f88f0
+  version: 37707fdb30a5b38865cfb95e5aab41707daec7fd
   subpackages:
   - unix
