@@ -37,7 +37,7 @@ type Description struct {
 }
 
 func (d *Description) String() string {
-	tmpl := `ProblemId: %v\nIsSolved?: %v\nCreatedAt: %v\nTimeLimit: %v`
+	tmpl := "ProblemId: %v\nIsSolved?: %v\nCreatedAt: %v\nTimeLimit: %v sec\n\nplease see below:\n http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=%v"
 
 	var problemId string
 	problemId = d.ProblemId
@@ -49,14 +49,14 @@ func (d *Description) String() string {
 		isSolvedMsg = "no"
 	}
 
-	t := time.Unix(d.CreatedAt, 0)
+	t := time.Unix(d.CreatedAt/1000, 0)
 	var createdAt string
 	createdAt = t.Format("2006-01-02")
 
 	var timeLimit int
 	timeLimit = d.TimeLimit
 
-	return fmt.Sprintf(tmpl, problemId, isSolvedMsg, createdAt, timeLimit)
+	return fmt.Sprintf(tmpl, problemId, isSolvedMsg, createdAt, timeLimit, problemId)
 }
 
 func GetDescriptionByProblemId(cookie, id string) (*Description, error) {
