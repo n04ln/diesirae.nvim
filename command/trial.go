@@ -57,7 +57,7 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 		nimvle.Log(err.Error())
 		return
 	}
-	fileType, err := transLanguage(extension)
+	fileType, err := changeExtToLanguageName(extension)
 	if err != nil {
 		nimvle.Log(err.Error())
 		return

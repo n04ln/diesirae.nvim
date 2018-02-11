@@ -11,7 +11,7 @@ import (
 	"github.com/neovim/go-client/nvim"
 )
 
-func transLanguage(ex string) (string, error) {
+func changeExtToLanguageName(ex string) (string, error) {
 	var language string
 	switch ex {
 	// Languages: C, Haskell, Go, C++14, JAVA, C#, D, Go, Rust, Ruby,
@@ -94,7 +94,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 		return err
 	}
 
-	language, err := transLanguage(extension)
+	language, err := changeExtToLanguageName(extension)
 	if err != nil {
 		nimvle.Log(err.Error())
 		return err

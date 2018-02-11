@@ -51,7 +51,7 @@ func (d *Description) String() string {
 
 	t := time.Unix(d.CreatedAt, 0)
 	var createdAt string
-	createdAt = t.Format("1997-07-03")
+	createdAt = t.Format("2006-01-02")
 
 	var timeLimit int
 	timeLimit = d.TimeLimit
