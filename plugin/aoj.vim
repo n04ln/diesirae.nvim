@@ -19,6 +19,6 @@ call remote#host#RegisterPlugin('diesirae.nvim', '0', [
 \ {'type': 'function', 'name': 'AojSubmit', 'sync': 0, 'opts': {}},
 \ ])
 
-nnoremap <silent><C-d>s :<C-u>call AojSubmit(input("problem id: "))<CR>
-nnoremap <silent><C-d>t :<C-u>call AojRunSample(input("problem id: "))<CR>
-nnoremap <silent><C-d>d :<C-u>call AojDescription(input("problem id: "))<CR>
+nnoremap <silent><C-d>s :<C-u>call AojSubmit(input("problem id(submit): "))<CR>
+nnoremap <silent><C-d>t :<C-u>call AojRunSample(input("problem id(run sample): "))<CR>
+nnoremap <silent><C-d>d :<C-u>call AojDescription(input("problem id(description): "))<CR>
