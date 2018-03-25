@@ -104,6 +104,14 @@ func (samples *Samples) ExecSamples(fileType, sourceCode string, timeLimit int) 
 		runcommands = []string{
 			"*bin*",
 		}
+	case "C":
+		dot = ".c"
+		buildcommands = []string{
+			"gcc", "-o", "*bin*", "*source*",
+		}
+		runcommands = []string{
+			"*bin*",
+		}
 	default:
 		return nil, fmt.Errorf("unsupported language: %s", fileType)
 	}
