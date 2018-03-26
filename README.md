@@ -89,7 +89,7 @@ This is interactive(`<C-d>s` is `:call AojSubmit(input("problem id: "))`)
 
 - Try Sample Input/Output
   - It is the same as using `AojSubmit`
-  - Currently, only support `Golang` and `C++14`
+  - Currently, only support `Golang` and `C++14`, `C`
 
 - But It is not recorded on the AOJ server
 
