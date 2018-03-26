@@ -35,7 +35,7 @@ func (s *Samples) String() string {
 		return "no test cases"
 	}
 
-	temp := "Serial %d:\nInput:\n%s===\nExpected Output:\n%s===\nActual Output:\n%s===\n"
+	temp := "Serial %d:\nInput:\n%s\nExpected Output:\n%s\nActual Output:\n%s\n*****"
 	var res string
 	for _, ss := range s.Samples {
 		res += fmt.Sprintf(temp, ss.Serial, ss.Input, ss.Output, ss.Actual)
@@ -43,12 +43,12 @@ func (s *Samples) String() string {
 
 	for i, ss := range s.Samples {
 		if ss.Actual != ss.Output {
-			res = "Wrong Answer...\n Don't worry! this is testing sample I/O!\n===" + res
+			res = "Wrong Answer...\n Don't worry! this is testing sample I/O!\n*****" + res
 			break
 		}
 
 		if i+1 == len(s.Samples) {
-			res = "All cases AC!\n Good Job!\n===" + res
+			res = "All cases AC!\n Good Job!\n*****" + res
 		}
 	}
 
