@@ -2,11 +2,19 @@ package command
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/NoahOrberg/diesirae.nvim/aoj"
 	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/NoahOrberg/nimvle.nvim/nimvle"
 	"github.com/neovim/go-client/nvim"
+)
+
+var (
+	done chan struct{}
+	ss   = []string{
+		"\\", "|", "/", "-", "\\", "|", "/", "-",
+	}
 )
 
 func nimvleNew(v *nvim.Nvim) *nimvle.Nimvle {
@@ -69,4 +77,44 @@ func (a *AOJ) panicLog(v *nvim.Nvim) {
 			n.SetContentToBuffer(*a.DebugScratchBuffer, fmt.Sprintf("%v", err))
 		}
 	}
+}
+
+type loading uint64
+
+func (s *loading) String() string {
+	tmp := loading(uint64(*s) + 1)
+	*s = tmp
+	return ss[uint64(*s)%uint64(len(ss))]
+}
+
+func drawLoadingCycle(nimvle *nimvle.Nimvle, scratchBuf *nvim.Buffer) {
+	l := new(loading)
+	for {
+		select {
+		case <-done:
+			return
+		default:
+			err := nimvle.ShowScratchBuffer(*scratchBuf, l)
+			if err != nil {
+				nimvle.Log(err.Error())
+				return
+			}
+			time.Sleep(100 * time.Millisecond)
+		}
+	}
+}
+
+type empty struct{}
+
+func (e *empty) String() string {
+	return ""
+}
+
+func flushLoadingCycle(nimvle *nimvle.Nimvle, scratch *nvim.Buffer, err error) {
+	if err == nil {
+		return
+	}
+	done <- struct{}{}
+	e := &empty{}
+	nimvle.ShowScratchBuffer(*scratch, e)
 }

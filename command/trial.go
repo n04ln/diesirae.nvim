@@ -22,16 +22,29 @@ func (c *CompileError) String() string {
 func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 	defer a.panicLog(v)
 	nimvle := nimvleNew(v)
+	done = make(chan struct{})
+
+	if a.ScratchBuffer == nil {
+		a.ScratchBuffer, err = nimvle.NewScratchBuffer(config.GetConfig().ResultBufferName)
+		if err != nil {
+			nimvle.Log(err.Error())
+			return
+		}
+	}
+
+	go drawLoadingCycle(nimvle, a.ScratchBuffer)
 
 	if len(args) != 1 {
 		err = util.ErrInvalidArgs
 		nimvle.Log(err.Error())
+		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 		return
 	}
 
 	if a.IsValidCookie == false {
 		err = util.ErrInvalidCookie
 		nimvle.Log(err.Error())
+		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 		return
 	}
 
@@ -46,6 +59,7 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 		if !ok || len(ids) == 0 {
 			err = errors.New("no such id")
 			nimvle.Log(err.Error())
+			flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 			return
 		}
 
@@ -55,17 +69,20 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 	extension, err := nimvle.CurrentBufferFilenameExtension()
 	if err != nil {
 		nimvle.Log(err.Error())
+		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 		return
 	}
 	fileType, err := changeExtToLanguageName(extension)
 	if err != nil {
 		nimvle.Log(err.Error())
+		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 		return
 	}
 
 	sourceCode, err := nimvle.GetContentFromCurrentBuffer()
 	if err != nil {
 		nimvle.Log(err.Error())
+		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 		return
 	}
 
@@ -75,6 +92,7 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 		samples, err := aoj.GetSampleInputOutput(problemId)
 		if err != nil {
 			nimvle.Log(err.Error())
+			flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 			return
 		}
 
@@ -82,6 +100,7 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 		desc, err := aoj.GetDescriptionByProblemId(a.Cookie, problemId)
 		if err != nil {
 			nimvle.Log(err.Error())
+			flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 			return
 		}
 
@@ -96,6 +115,7 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 				err = nimvle.ShowScratchBuffer(*a.ScratchBuffer, &CompileError{s: *output})
 				if err != nil {
 					nimvle.Log(err.Error())
+					flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 					return
 				}
 			}
@@ -104,20 +124,15 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 			return
 		}
 
-		// よしなにScratchBufferに表示
-		if a.ScratchBuffer == nil {
-			a.ScratchBuffer, err = nimvle.NewScratchBuffer(config.GetConfig().ResultBufferName)
-			if err != nil {
-				nimvle.Log(err.Error())
-				return
-			}
-		}
+		done <- struct{}{}
 		err = nimvle.ShowScratchBuffer(*a.ScratchBuffer, samples)
 		if err != nil {
 			nimvle.Log(err.Error())
+			flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 			return
 		}
 	}()
 
+	flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 	return
 }

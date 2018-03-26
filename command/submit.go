@@ -72,6 +72,15 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	}
 	defer a.panicLog(v)
 
+	if a.ScratchBuffer == nil {
+		var err error
+		a.ScratchBuffer, err = nimvle.NewScratchBuffer(config.GetConfig().ResultBufferName)
+		if err != nil {
+			nimvle.Log(err.Error())
+			return err
+		}
+	}
+
 	input := args[0]
 	var problemId string
 	// ここでは、URLでくるか、問題の題名だけでくるか、両方を受容する
@@ -125,13 +134,5 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 
 	a.SetStatusByBuffer(buf, stat)
 
-	// よしなにScratchBufferに表示
-	if a.ScratchBuffer == nil {
-		a.ScratchBuffer, err = nimvle.NewScratchBuffer(config.GetConfig().ResultBufferName)
-		if err != nil {
-			nimvle.Log(err.Error())
-			return err
-		}
-	}
 	return nimvle.ShowScratchBuffer(*a.ScratchBuffer, stat)
 }
