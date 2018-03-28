@@ -13,6 +13,7 @@ import (
 
 	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/NoahOrberg/diesirae.nvim/util"
+	"github.com/NoahOrberg/nimvle.nvim/nimvle"
 	"github.com/h2non/gentleman"
 )
 
@@ -82,7 +83,7 @@ func replaceBuildCommands(bc []string, bin, source string) []string {
 	return res
 }
 
-func (samples *Samples) ExecSamples(fileType, sourceCode string, timeLimit int) (*string, error) {
+func (samples *Samples) ExecSamples(nimvle *nimvle.Nimvle, fileType, sourceCode string, timeLimit int) (*string, error) {
 	var dot string
 	var buildcommands []string
 	var runcommands []string
@@ -112,6 +113,12 @@ func (samples *Samples) ExecSamples(fileType, sourceCode string, timeLimit int) 
 		runcommands = []string{
 			"*bin*",
 		}
+	case "Python3":
+		dot = ".py"
+		buildcommands = nil
+		runcommands = []string{
+			"python3", "*source*",
+		}
 	default:
 		return nil, fmt.Errorf("unsupported language: %s", fileType)
 	}
@@ -133,12 +140,16 @@ func (samples *Samples) ExecSamples(fileType, sourceCode string, timeLimit int) 
 	binpath := filepath.Join(dir, "tmp")
 	buildcommands = replaceBuildCommands(buildcommands, binpath, tmpfilepath)
 	if len(buildcommands) < 2 {
-		return nil, errors.New("invalid commands")
+		if !(buildcommands == nil || len(buildcommands) == 0) {
+			return nil, errors.New("invalid commands")
+		}
 	}
-	_, err = exec.Command(buildcommands[0], buildcommands[1:]...).Output()
-	if err != nil {
-		errStr := err.Error()
-		return &errStr, ErrCompileError
+	if len(buildcommands) >= 2 {
+		_, err = exec.Command(buildcommands[0], buildcommands[1:]...).Output()
+		if err != nil {
+			errStr := err.Error()
+			return &errStr, ErrCompileError
+		}
 	}
 
 	for i, sample := range samples.Samples {

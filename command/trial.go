@@ -107,7 +107,7 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 		}
 
 		// 実行
-		if output, err := samples.ExecSamples(fileType, sourceCode, desc.TimeLimit); err != nil {
+		if output, err := samples.ExecSamples(nimvle, fileType, sourceCode, desc.TimeLimit); err != nil {
 			if err == aoj.ErrCompileError {
 				if output == nil {
 					output = new(string)
