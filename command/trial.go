@@ -88,6 +88,8 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 
 	// 現状、無限に返ってこない可能性があるため並列処理に回す
 	go func() {
+		defer a.panicLog(v)
+
 		// sampleコード表示
 		samples, err := aoj.GetSampleInputOutput(problemId)
 		if err != nil {
@@ -108,6 +110,7 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 		if output, err := samples.ExecSamples(fileType, sourceCode, desc.TimeLimit); err != nil {
 			if err == aoj.ErrCompileError {
 				if output == nil {
+					output = new(string)
 					*output = "unexpected error"
 				}
 
@@ -115,12 +118,11 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 				err = nimvle.ShowScratchBuffer(*a.ScratchBuffer, &CompileError{s: *output})
 				if err != nil {
 					nimvle.Log(err.Error())
-					flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 					return
 				}
 			}
 
-			nimvle.Log(err.Error())
+			done <- struct{}{}
 			return
 		}
 
@@ -134,5 +136,5 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 	}()
 
 	flushLoadingCycle(nimvle, a.ScratchBuffer, err)
-	return
+	return nil
 }

@@ -114,6 +114,7 @@ func flushLoadingCycle(nimvle *nimvle.Nimvle, scratch *nvim.Buffer, err error) {
 	if err == nil {
 		return
 	}
+
 	done <- struct{}{}
 	e := &empty{}
 	nimvle.ShowScratchBuffer(*scratch, e)
