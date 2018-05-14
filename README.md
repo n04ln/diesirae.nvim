@@ -24,6 +24,13 @@ $ go get github.com/NoahOrberg/diesirae.nvim
 call dein#add("NoahOrberg/diesirae.nvim")
 ```
 
+3. and `diesirae.nvim` depends on `vivid.vim` now.  
+plz write in your `init.vim`.
+```
+" using dein.nvim
+call dein#add("NoahOrberg/vivid.vim")
+```
+
 ## Usage
 
 you need to set the following two environment variables
