@@ -72,6 +72,17 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	}
 	defer a.panicLog(v)
 
+	if a.ScratchBuffer == nil {
+		var err error
+		a.ScratchBuffer, err = nimvle.NewScratchBuffer(config.GetConfig().ResultBufferName)
+		if err != nil {
+			nimvle.Log(err.Error())
+			return err
+		}
+	}
+
+	go drawLoadingCycle(nimvle, a.ScratchBuffer)
+
 	input := args[0]
 	var problemId string
 	// ここでは、URLでくるか、問題の題名だけでくるか、両方を受容する
@@ -82,6 +93,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 		ids, ok := u.Query()["id"]
 		if !ok || len(ids) == 0 {
 			nimvle.Log(err.Error())
+			flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 			return errors.New("no such id")
 		}
 
@@ -91,47 +103,47 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 	extension, err := nimvle.CurrentBufferFilenameExtension()
 	if err != nil {
 		nimvle.Log(err.Error())
+		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 		return err
 	}
 
 	language, err := changeExtToLanguageName(extension)
 	if err != nil {
 		nimvle.Log(err.Error())
+		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 		return err
 	}
 
 	sourceCode, err := nimvle.GetContentFromCurrentBuffer()
 	if err != nil {
 		nimvle.Log(err.Error())
+		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 		return err
 	}
 
 	token, err := aoj.Submit(a.Cookie, problemId, language, sourceCode)
 	if err != nil {
 		nimvle.Log(err.Error())
+		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 		return err
 	}
 
 	stat, err := aoj.Status(a.Cookie, token, problemId)
 	if err != nil {
+		nimvle.Log(err.Error())
+		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 		return err
 	}
 
 	buf, err := v.CurrentBuffer()
 	if err != nil {
 		nimvle.Log(err.Error())
+		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 		return err
 	}
 
+	done <- struct{}{}
 	a.SetStatusByBuffer(buf, stat)
 
-	// よしなにScratchBufferに表示
-	if a.ScratchBuffer == nil {
-		a.ScratchBuffer, err = nimvle.NewScratchBuffer(config.GetConfig().ResultBufferName)
-		if err != nil {
-			nimvle.Log(err.Error())
-			return err
-		}
-	}
 	return nimvle.ShowScratchBuffer(*a.ScratchBuffer, stat)
 }

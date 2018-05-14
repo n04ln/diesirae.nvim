@@ -24,6 +24,13 @@ $ go get github.com/NoahOrberg/diesirae.nvim
 call dein#add("NoahOrberg/diesirae.nvim")
 ```
 
+3. and `diesirae.nvim` depends on `vivid.vim` now.  
+plz write in your `init.vim`.
+```
+" using dein.nvim
+call dein#add("NoahOrberg/vivid.vim")
+```
+
 ## Usage
 
 you need to set the following two environment variables
@@ -89,7 +96,7 @@ This is interactive(`<C-d>s` is `:call AojSubmit(input("problem id: "))`)
 
 - Try Sample Input/Output
   - It is the same as using `AojSubmit`
-  - Currently, only support `Golang` and `C++14`
+  - Currently, only support `Golang` and `C++14`, `C`
 
 - But It is not recorded on the AOJ server
 
