@@ -21,6 +21,10 @@ func (c *CompileError) String() string {
 // Vim-Function definition:
 func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 	defer a.panicLog(v)
+	if len(args) > 0 && args[0] == "" {
+		return nil
+	}
+
 	nimvle := nimvleNew(v)
 	done = make(chan struct{})
 

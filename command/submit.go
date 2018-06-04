@@ -59,6 +59,10 @@ func changeExtToLanguageName(ex string) (string, error) {
 // Vim-Function definition:
 //   第一引数で問題のタイトルを指定する。
 func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
+	if len(args) > 0 && args[0] == "" {
+		return nil
+	}
+
 	nimvle := nimvleNew(v)
 
 	if len(args) != 1 {
