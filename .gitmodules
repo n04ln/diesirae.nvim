@@ -1,3 +1,0 @@
-[submodule "autoload/vivid"]
-	path = autoload/vivid
-	url = https://github.com/NoahOrberg/vivid.vim
