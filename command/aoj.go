@@ -94,7 +94,7 @@ func drawLoadingCycle(nimvle *nimvle.Nimvle, scratchBuf *nvim.Buffer) {
 		case <-done:
 			return
 		default:
-			err := nimvle.ShowScratchBuffer(*scratchBuf, l)
+			err := nimvle.SetStringerContentToBuffer(*scratchBuf, l)
 			if err != nil {
 				nimvle.Log(err.Error())
 				return

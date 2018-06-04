@@ -1,5 +1,5 @@
 hash: 934f5401838e6e5465080e2d2303891b32747a4c334d00aafcacda5ec8c0a2fa
-updated: 2018-02-11T12:47:17.509673779+09:00
+updated: 2018-06-04T10:07:24.568345+09:00
 imports:
 - name: github.com/h2non/gentleman
   version: b18ebfa8f3ea4d2f620e332d7a29e55647ae729e
@@ -15,7 +15,7 @@ imports:
   - nvim
   - nvim/plugin
 - name: github.com/NoahOrberg/nimvle.nvim
-  version: 3777a10e64054c3cc93970c0b598d00cca9cbe6d
+  version: 22923660e2a6f7cffa76b24c2f7e369779f5f67a
   subpackages:
   - nimvle
 - name: golang.org/x/net
