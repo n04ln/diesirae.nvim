@@ -4,6 +4,10 @@
 
 AOJ client for NeoVim  
 
+## Demo
+
+[![asciicast](https://asciinema.org/a/188775.png)](https://asciinema.org/a/188775)
+
 ## How to install
 ### Require
 
