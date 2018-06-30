@@ -13,7 +13,6 @@ import (
 
 	"github.com/NoahOrberg/diesirae.nvim/config"
 	"github.com/NoahOrberg/diesirae.nvim/util"
-	"github.com/NoahOrberg/nimvle.nvim/nimvle"
 	"github.com/h2non/gentleman"
 )
 
@@ -83,45 +82,8 @@ func replaceBuildCommands(bc []string, bin, source string) []string {
 	return res
 }
 
-func (samples *Samples) ExecSamples(nimvle *nimvle.Nimvle, fileType, sourceCode string, timeLimit int) (*string, error) {
-	var dot string
-	var buildcommands []string
-	var runcommands []string
-	switch fileType {
-	// TODO: runcommands, buildcommandsは後々vimscriptで設定できるようにする(でもAOJの環境では決められたコマンドなので気にしなくて良いかも？)
-	case "Go":
-		dot = ".go"
-		buildcommands = []string{
-			"go", "build", "-o", "*bin*", "*source*",
-		}
-		runcommands = []string{
-			"*bin*",
-		}
-	case "C++14":
-		dot = ".cpp"
-		buildcommands = []string{
-			"g++", "-o", "*bin*", "*source*",
-		}
-		runcommands = []string{
-			"*bin*",
-		}
-	case "C":
-		dot = ".c"
-		buildcommands = []string{
-			"gcc", "-o", "*bin*", "*source*",
-		}
-		runcommands = []string{
-			"*bin*",
-		}
-	case "Python3":
-		dot = ".py"
-		buildcommands = nil
-		runcommands = []string{
-			"python3", "*source*",
-		}
-	default:
-		return nil, fmt.Errorf("unsupported language: %s", fileType)
-	}
+func (samples *Samples) ExecSamples(ext, sourceCode string,
+	buildCommands, execCommands []string, timeLimit int) (*string, error) {
 
 	// tempfile用dir作成
 	dir, err := ioutil.TempDir("", "diesirae")
@@ -131,21 +93,21 @@ func (samples *Samples) ExecSamples(nimvle *nimvle.Nimvle, fileType, sourceCode 
 	defer os.RemoveAll(dir) // clean up
 
 	// tempfile
-	tmpfilepath := filepath.Join(dir, "tmpfile"+dot)
+	tmpfilepath := filepath.Join(dir, "tmpfile."+ext)
 	if err := ioutil.WriteFile(tmpfilepath, []byte(sourceCode), 0666); err != nil {
 		return nil, err
 	}
 
 	// build tempfile
 	binpath := filepath.Join(dir, "tmp")
-	buildcommands = replaceBuildCommands(buildcommands, binpath, tmpfilepath)
-	if len(buildcommands) < 2 {
-		if !(buildcommands == nil || len(buildcommands) == 0) {
+	buildCommands = replaceBuildCommands(buildCommands, binpath, tmpfilepath)
+	if len(buildCommands) < 2 {
+		if !(buildCommands == nil || len(buildCommands) == 0) {
 			return nil, errors.New("invalid commands")
 		}
 	}
-	if len(buildcommands) >= 2 {
-		_, err = exec.Command(buildcommands[0], buildcommands[1:]...).Output()
+	if len(buildCommands) >= 2 {
+		_, err = exec.Command(buildCommands[0], buildCommands[1:]...).Output()
 		if err != nil {
 			errStr := err.Error()
 			return &errStr, ErrCompileError
@@ -155,14 +117,14 @@ func (samples *Samples) ExecSamples(nimvle *nimvle.Nimvle, fileType, sourceCode 
 	for i, sample := range samples.Samples {
 		// run tempfile within Stdin
 		var cmd *exec.Cmd
-		runcommands = replaceBuildCommands(runcommands, binpath, tmpfilepath)
-		if len(runcommands) < 2 {
-			if len(runcommands) == 0 {
+		execCommands = replaceBuildCommands(execCommands, binpath, tmpfilepath)
+		if len(execCommands) < 2 {
+			if len(execCommands) == 0 {
 				return nil, errors.New("invalid commands")
 			}
-			cmd = exec.Command(runcommands[0])
+			cmd = exec.Command(execCommands[0])
 		} else {
-			cmd = exec.Command(runcommands[0], runcommands[1:]...)
+			cmd = exec.Command(execCommands[0], execCommands[1:]...)
 		}
 		if cmd == nil {
 			return nil, errors.New("invalid commands")
