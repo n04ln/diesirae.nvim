@@ -1,0 +1,98 @@
+*diesirae.nvim* Holy Power AOJ client for NeoVim 
+                    (AOJ is here: http://judge.u-aizu.ac.jp/onlinejudge/index.jsp)
+
+                 diesirae.nvim        by NoahOrberg
+                this plugin is AOJ client for NeoVim
+
+
+Contents                                          *diesirae-contents*
+
+
+Introduction                                      |diesirae-introduction|
+
+SETTING EXAMPLE                                   |diesirae-setting-example|
+
+Commands                                          |diesirae-commands|
+  AojSelf                                         |:AojSelf|
+  AojSession                                      |:AojSession|
+  AojStatus                                       |:AojStatus|
+  AojStatusList                                   |:AojStatusList|
+
+Functions                                         |diesirae-functions|
+  AojSubmit                                       |AojSubmit()|
+  AojRunSample                                    |AojRunSample()|
+  AojDescription                                  |AojDescription()|
+
+Variables                                         |diesirae-variables|
+  g:diesirae_config                               |diesirae_config|
+
+========================================================================================
+INTRODUCTION                                      *diesirae-introduction*
+
+    diesirae.nvim is neovim plugin that is AOJ client for NeoVim
+    You need to set AOJ ID and password to ENVIRONMENT VARIABLE
+    e.g.
+        export AOJ_ID=xxxxx
+        export AOJ_RAWPASSWORD=yyyyy
+
+========================================================================================
+SETTING EXAMPLE                                   *diesirae-setting-example*
+
+    if you want to execute in local environment, 
+            please set |diesirae.nvim-variables-config| as follows.
+>
+    let g:diesirae_config = {
+    \  'commands': {
+    \    'py': {
+    \      'build_command': [], 
+    \      'exec_command': ['python3', '*source*']
+    \    },
+    \    'go': {
+    \      'build_command': ['go', 'build', '-o', '*bin*', '*source*'], 
+    \      'exec_command': ['*bin*']
+    \    }
+    \  }
+    \}
+<
+
+========================================================================================
+COMMANDS                                          *diesirae-commands*
+
+:AojSelf                                          *:AojSelf*
+    :AojSelf check session is valid or invalid.
+
+:AojSession                                       *:AojSession*
+    :AojSession re-connect session to AOJ server.
+    You need to set AOJ ID and password to ENVIRONMENT VARIABLE.
+
+:AojStatus                                        *:AojStatus*
+    :AojStatus show previous submission status of current buffer.
+
+:AojStatusList                                    *:AojStatusList*
+    :AojStatusList show status list of all buffers.
+
+========================================================================================
+FUNCTIONS                                         *diesirae-functions*
+
+AojSubmit({problem_id})                           *AojSubmit()*
+    Submit source code from current buffer to AOJ server.
+    {problem_id} means problem id or url.
+
+AojRunSample({problem_id})                        *AojRunSample()*
+    Execute local environment that source code from current buffer.
+    Setting of variable |diesirae.nvim-variables-config| is necessary.
+    {problem_id} means problem id or url.
+
+AojDescription({problem_id})                      *AojDescription()*
+    Get description of the {problem_id}'s problem.
+    {problem_id} means problem id or url.
+
+========================================================================================
+VARIABLE                                          *diesirae-variables*
+
+diesirae.nvim has 1 variables.
+
+g:diesirae_config                                 *diesirae_config*
+    this variable is config
+
+
