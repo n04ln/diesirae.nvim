@@ -26,7 +26,7 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 	}
 
 	nimvle := nimvleNew(v)
-	done = make(chan struct{})
+	done = make(chan string)
 
 	if a.ScratchBuffer == nil {
 		a.ScratchBuffer, err = nimvle.NewScratchBuffer(config.GetConfig().ResultBufferName)
@@ -76,12 +76,6 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 		return
 	}
-	fileType, err := changeExtToLanguageName(extension)
-	if err != nil {
-		nimvle.Log(err.Error())
-		flushLoadingCycle(nimvle, a.ScratchBuffer, err)
-		return
-	}
 
 	sourceCode, err := nimvle.GetContentFromCurrentBuffer()
 	if err != nil {
@@ -111,7 +105,19 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 		}
 
 		// 実行
-		if output, err := samples.ExecSamples(nimvle, fileType, sourceCode, desc.TimeLimit); err != nil {
+		vsConfig, err := config.GetVSConfig(v)
+		buildCommand, execCommand := make([]string, 0), make([]string, 0)
+		if cm, ok := vsConfig.Commands[extension]; ok {
+			buildCommand = cm.BuildCommand
+			execCommand = cm.ExecCommand
+		} else if len(buildCommand) == 0 && len(execCommand) == 0 {
+			err := errors.New("no such build config of " + extension + " language in g:" + util.ConfigVarName)
+			nimvle.Log(err.Error())
+			flushLoadingCycle(nimvle, a.ScratchBuffer, err)
+			return
+		}
+		if output, err := samples.ExecSamples(extension, sourceCode,
+			buildCommand, execCommand, desc.TimeLimit); err != nil {
 			if err == aoj.ErrCompileError {
 				if output == nil {
 					output = new(string)
@@ -122,15 +128,16 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 				err = nimvle.ShowScratchBuffer(*a.ScratchBuffer, &CompileError{s: *output})
 				if err != nil {
 					nimvle.Log(err.Error())
+					flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 					return
 				}
 			}
 
-			done <- struct{}{}
+			done <- ""
 			return
 		}
 
-		done <- struct{}{}
+		done <- ""
 		err = nimvle.ShowScratchBuffer(*a.ScratchBuffer, samples)
 		if err != nil {
 			nimvle.Log(err.Error())
@@ -139,6 +146,5 @@ func (a *AOJ) Trial(v *nvim.Nvim, args []string) (err error) {
 		}
 	}()
 
-	flushLoadingCycle(nimvle, a.ScratchBuffer, err)
 	return nil
 }

@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	done chan struct{}
+	done chan string
 	ss   = []string{
 		"\\", "|", "/", "-", "\\", "|", "/", "-",
 	}
@@ -91,7 +91,15 @@ func drawLoadingCycle(nimvle *nimvle.Nimvle, scratchBuf *nvim.Buffer) {
 	l := new(loading)
 	for {
 		select {
-		case <-done:
+		case s := <-done:
+			if s == "" {
+				return
+			}
+			err := nimvle.SetContentToBuffer(*scratchBuf, s)
+			if err != nil {
+				nimvle.Log(err.Error())
+				return
+			}
 			return
 		default:
 			err := nimvle.SetStringerContentToBuffer(*scratchBuf, l)
@@ -115,7 +123,7 @@ func flushLoadingCycle(nimvle *nimvle.Nimvle, scratch *nvim.Buffer, err error) {
 		return
 	}
 
-	done <- struct{}{}
+	done <- ""
 	e := &empty{}
 	nimvle.ShowScratchBuffer(*scratch, e)
 }

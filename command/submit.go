@@ -85,7 +85,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 		}
 	}
 
-	done = make(chan struct{})
+	done = make(chan string)
 	go drawLoadingCycle(nimvle, a.ScratchBuffer)
 
 	input := args[0]
@@ -147,7 +147,7 @@ func (a *AOJ) SubmitAndCheckStatus(v *nvim.Nvim, args []string) error {
 		return err
 	}
 
-	done <- struct{}{}
+	done <- ""
 	a.SetStatusByBuffer(buf, stat)
 
 	return nimvle.ShowScratchBuffer(*a.ScratchBuffer, stat)
