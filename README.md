@@ -73,6 +73,48 @@ This is interactive(`<C-d>s` is `:call AojSubmit(input("problem id: "))`)
 ![](./img/XXXXX.gif)
 -->
 
+### AojRunSample
+
+- Try Sample Input/Output
+  - It is the same as using `AojSubmit`
+
+- This command requires setting of the `g:diesirae_config` variable
+
+``` vim
+let g:diesirae_config={
+\  'commands': {
+\    'py': {
+\      'build_command': [], 
+\      'exec_command': ['python3', '*source*']
+\    },
+\    'go': {
+\      'build_command': ['go', 'build', '-o', '*bin*', '*source*'], 
+\      'exec_command': ['*bin*']
+\    }
+\  }
+\}
+```
+
+- But It is not recorded on the AOJ server
+
+``` vim
+:call AojRunSample("<PROBLEM_ID_OR_URL>")
+```
+
+or use `<C-d>t` in normal mode.
+This is interactive(`<C-d>t` is `:call AojRunSample(input("problem id: "))`) 
+
+### AojDescription
+
+- Get Description
+
+``` vim
+:call AojDescription("<PROBLEM_ID_OR_URL>")
+```
+
+or use `<C-d>d` in normal mode.
+This is interactive(`<C-d>d` is `:call AojDescription(input("problem id: "))`) 
+
 ### AojStatus
 
 - Get status of current buffer
@@ -88,24 +130,4 @@ This is interactive(`<C-d>s` is `:call AojSubmit(input("problem id: "))`)
 ``` vim
 :AojStatusList
 ```
-
-### AojRunSample
-
-- Try Sample Input/Output
-  - It is the same as using `AojSubmit`
-  - Currently, support `Golang`, `C++14`, `C` and `python3`
-
-- But It is not recorded on the AOJ server
-
-``` vim
-:call AojRunSample("<PROBLEM_ID_OR_URL>")
-```
-
-or use `<C-d>t` in normal mode.
-This is interactive(`<C-d>t` is `:call AojRunSample(input("problem id: "))`) 
-
-<!--
-#### example
-![](./img/XXXXX.gif)
--->
 
