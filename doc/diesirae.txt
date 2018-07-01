@@ -92,20 +92,34 @@ g:diesirae_config                                 *g:diesirae_config*
     This variable is the config for local execution.
     Construct a dictionary using the file extension as a key.
     Also, value is dictionary, it is configured {build_command} and {exec_command}.
+    For insrance, Golang, 
+>
+    \    'go': {
+    \      'build_command': ['go', 'build', '-o', '*bin*', '*source*'], 
+    \      'exec_command': ['*bin*']
+    \    }
+<
+    For insrance, python3, 
+>
+    \    'py': {
+    \      'build_command': [], 
+    \      'exec_command': ['python3', '*souce*']
+    \    }
+<
+    build_command                                 *build_command*
     {build_command} means the command when build it.
-    And {exec_command} means the command when execute it.
-    For instance, Golang, {build_command} is 
-
-    >
+>
     {'build_command': ['go', 'build', '-o', '*bin*', '*source*']}
-    <
+<
+    If your language is script language (e.g, python3, ruby and so on),
+        there is need to set empty array.
 
+    exec_command                                  *exec_command*
+    And {exec_command} means the command when execute it.
     and {exec_command} is
-
-    >
+>
     {'exec_command': ['*bin*']}
-    <
-
+<
     {*bin*} and {*source*} is placeholder, In practice this will replace the file
     in the temp dir.
 
