@@ -1,30 +1,25 @@
 *diesirae.nvim* Holy Power AOJ client for NeoVim 
                     (AOJ is here: http://judge.u-aizu.ac.jp/onlinejudge/index.jsp)
 
-                 diesirae.nvim        by NoahOrberg
-                this plugin is AOJ client for NeoVim
+Author: NoahOrberg
+License: MIT
 
-
+========================================================================================
 Contents                                          *diesirae-contents*
 
-
 Introduction                                      |diesirae-introduction|
-
 SETTING EXAMPLE                                   |diesirae-setting-example|
-
 Commands                                          |diesirae-commands|
   AojSelf                                         |:AojSelf|
   AojSession                                      |:AojSession|
   AojStatus                                       |:AojStatus|
   AojStatusList                                   |:AojStatusList|
-
 Functions                                         |diesirae-functions|
   AojSubmit                                       |AojSubmit()|
   AojRunSample                                    |AojRunSample()|
   AojDescription                                  |AojDescription()|
-
 Variables                                         |diesirae-variables|
-  g:diesirae_config                               |diesirae_config|
+  g:diesirae_config                               |g:diesirae_config|
 
 ========================================================================================
 INTRODUCTION                                      *diesirae-introduction*
@@ -40,6 +35,7 @@ SETTING EXAMPLE                                   *diesirae-setting-example*
 
     if you want to execute in local environment, 
             please set |diesirae.nvim-variables-config| as follows.
+    see |g:diesirae_config|
 >
     let g:diesirae_config = {
     \  'commands': {
@@ -88,11 +84,30 @@ AojDescription({problem_id})                      *AojDescription()*
     {problem_id} means problem id or url.
 
 ========================================================================================
-VARIABLE                                          *diesirae-variables*
+VARIABLES                                         *diesirae-variables*
 
 diesirae.nvim has 1 variables.
 
-g:diesirae_config                                 *diesirae_config*
-    this variable is config
+g:diesirae_config                                 *g:diesirae_config*
+    This variable is the config for local execution.
+    Construct a dictionary using the file extension as a key.
+    Also, value is dictionary, it is configured {build_command} and {exec_command}.
+    {build_command} means the command when build it.
+    And {exec_command} means the command when execute it.
+    For instance, Golang, {build_command} is 
 
+    >
+    {'build_command': ['go', 'build', '-o', '*bin*', '*source*']}
+    <
 
+    and {exec_command} is
+
+    >
+    {'exec_command': ['*bin*']}
+    <
+
+    {*bin*} and {*source*} is placeholder, In practice this will replace the file
+    in the temp dir.
+
+========================================================================================
+vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl
