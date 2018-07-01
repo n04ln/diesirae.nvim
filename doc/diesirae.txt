@@ -111,12 +111,13 @@ g:diesirae_config                                 *g:diesirae_config*
 >
     {'build_command': ['go', 'build', '-o', '*bin*', '*source*']}
 <
-    If your language is script language (e.g, python3, ruby and so on),
-        there is need to set empty array.
-
+    If you use script language (e.g, python3, ruby and so on),
+    there is need to set empty array as follows.
+>
+    {'build_command': []}
+<
     exec_command                                  *exec_command*
-    And {exec_command} means the command when execute it.
-    and {exec_command} is
+    {exec_command} means the command when execute it.
 >
     {'exec_command': ['*bin*']}
 <

@@ -68,11 +68,6 @@ diesirae.nvim provides 6 commands
 or use `<C-d>s` in normal mode. 
 This is interactive(`<C-d>s` is `:call AojSubmit(input("problem id: "))`) 
 
-<!--
-#### example
-![](./img/XXXXX.gif)
--->
-
 ### AojRunSample
 
 - Try Sample Input/Output
@@ -81,7 +76,7 @@ This is interactive(`<C-d>s` is `:call AojSubmit(input("problem id: "))`)
 - This command requires setting of the `g:diesirae_config` variable
 
 ``` vim
-let g:diesirae_config={
+let g:diesirae_config = {
 \  'commands': {
 \    'py': {
 \      'build_command': [], 
