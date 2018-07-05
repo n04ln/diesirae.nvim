@@ -37,7 +37,7 @@ $ export AOJ_ID=xxxxxxxx
 $ export AOJ_RAWPASSWORD=yyyyyyyy
 ```
 
-diesirae.nvim provides 6 commands 
+diesirae.nvim provides 4 commands and 3 functions
 
 ### AojSelf
 - Check session
