@@ -1,5 +1,5 @@
-hash: 934f5401838e6e5465080e2d2303891b32747a4c334d00aafcacda5ec8c0a2fa
-updated: 2018-06-04T10:07:24.568345+09:00
+hash: 5e6bb72c04b708141ea66de8aadc5f814f53a92cf9b6c49092d7eadd8114ab9a
+updated: 2020-02-23T00:17:16.226199+09:00
 imports:
 - name: github.com/h2non/gentleman
   version: b18ebfa8f3ea4d2f620e332d7a29e55647ae729e
@@ -7,6 +7,10 @@ imports:
   - plugins/body
 - name: github.com/kelseyhightower/envconfig
   version: 462fda1f11d8cad3660e52737b8beefd27acfb3f
+- name: github.com/n04ln/nimvle.nvim
+  version: 22923660e2a6f7cffa76b24c2f7e369779f5f67a
+  subpackages:
+  - nimvle
 - name: github.com/neovim/go-client
   version: 1c2696a88048c01a46c9c6be486ee0ded23beb91
   subpackages:
@@ -14,10 +18,6 @@ imports:
   - msgpack/rpc
   - nvim
   - nvim/plugin
-- name: github.com/NoahOrberg/nimvle.nvim
-  version: 22923660e2a6f7cffa76b24c2f7e369779f5f67a
-  subpackages:
-  - nimvle
 - name: golang.org/x/net
   version: f5dfe339be1d06f81b22525fe34671ee7d2c8904
   subpackages:

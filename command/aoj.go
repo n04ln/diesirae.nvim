@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/NoahOrberg/diesirae.nvim/aoj"
-	"github.com/NoahOrberg/diesirae.nvim/config"
-	"github.com/NoahOrberg/nimvle.nvim/nimvle"
+	"github.com/n04ln/diesirae.nvim/aoj"
+	"github.com/n04ln/diesirae.nvim/config"
+	"github.com/n04ln/nimvle.nvim/nimvle"
 	"github.com/neovim/go-client/nvim"
 )
 

@@ -1,6 +1,6 @@
 # diesirae.nvim
 
-![](https://travis-ci.org/NoahOrberg/diesirae.nvim.svg?branch=master)
+![](https://travis-ci.org/n04ln/diesirae.nvim.svg?branch=master)
 
 AOJ client for NeoVim  
 
@@ -19,13 +19,13 @@ AOJ client for NeoVim
 
 1. get
 ``` sh
-$ go get github.com/NoahOrberg/diesirae.nvim
+$ go get github.com/n04ln/diesirae.nvim
 ```
 
 2. write in your `init.vim` (or `.vimrc`)
 ``` vim
 " using dein.nvim
-call dein#add("NoahOrberg/diesirae.nvim")
+call dein#add("n04ln/diesirae.nvim")
 ```
 
 ## Usage

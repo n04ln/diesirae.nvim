@@ -1,6 +1,6 @@
-package: github.com/NoahOrberg/diesirae.nvim
+package: github.com/n04ln/diesirae.nvim
 import:
-- package: github.com/NoahOrberg/nimvle.nvim
+- package: github.com/n04ln/nimvle.nvim
   subpackages:
   - nimvle
 - package: github.com/h2non/gentleman
