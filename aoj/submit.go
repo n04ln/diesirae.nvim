@@ -5,8 +5,8 @@ import (
 
 	"github.com/n04ln/diesirae.nvim/config"
 	"github.com/n04ln/diesirae.nvim/util"
-	"github.com/h2non/gentleman"
-	"github.com/h2non/gentleman/plugins/body"
+	"gopkg.in/h2non/gentleman.v2"
+	"gopkg.in/h2non/gentleman.v2/plugins/body"
 )
 
 type SubmitRes struct {
