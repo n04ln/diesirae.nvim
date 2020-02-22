@@ -1,6 +1,6 @@
 # diesirae.nvim
 
-![](https://travis-ci.org/n04ln/diesirae.nvim.svg?branch=master)
+![build](https://github.com/n04ln/diesirae.nvim/workflows/build/badge.svg?branch=master)
 
 AOJ client for NeoVim  
 
