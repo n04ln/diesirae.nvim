@@ -1,10 +1,10 @@
 package aoj
 
 import (
-	"github.com/NoahOrberg/diesirae.nvim/config"
-	"github.com/NoahOrberg/diesirae.nvim/util"
-	"github.com/h2non/gentleman"
-	"github.com/h2non/gentleman/plugins/body"
+	"github.com/n04ln/diesirae.nvim/config"
+	"github.com/n04ln/diesirae.nvim/util"
+	"gopkg.in/h2non/gentleman.v2"
+	"gopkg.in/h2non/gentleman.v2/plugins/body"
 )
 
 func Session(id, rawPassword string) (string, error) {

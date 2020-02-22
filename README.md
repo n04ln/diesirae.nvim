@@ -1,6 +1,6 @@
 # diesirae.nvim
 
-![](https://travis-ci.org/NoahOrberg/diesirae.nvim.svg?branch=master)
+![build](https://github.com/n04ln/diesirae.nvim/workflows/build/badge.svg?branch=master)
 
 AOJ client for NeoVim  
 
@@ -12,20 +12,19 @@ AOJ client for NeoVim
 ### Require
 
 - NeoVim (>=0.2.1)
-- go (>=1.8)
-- glide
+- go (>=1.11)
 
 ### Install 
 
 1. get
 ``` sh
-$ go get github.com/NoahOrberg/diesirae.nvim
+$ go get github.com/n04ln/diesirae.nvim
 ```
 
 2. write in your `init.vim` (or `.vimrc`)
 ``` vim
 " using dein.nvim
-call dein#add("NoahOrberg/diesirae.nvim")
+call dein#add("n04ln/diesirae.nvim")
 ```
 
 ## Usage

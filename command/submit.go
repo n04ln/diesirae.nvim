@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/NoahOrberg/diesirae.nvim/aoj"
-	"github.com/NoahOrberg/diesirae.nvim/config"
-	"github.com/NoahOrberg/diesirae.nvim/util"
+	"github.com/n04ln/diesirae.nvim/aoj"
+	"github.com/n04ln/diesirae.nvim/config"
+	"github.com/n04ln/diesirae.nvim/util"
 	"github.com/neovim/go-client/nvim"
 )
 

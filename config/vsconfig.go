@@ -3,7 +3,7 @@ package config
 import (
 	"encoding/json"
 
-	"github.com/NoahOrberg/diesirae.nvim/util"
+	"github.com/n04ln/diesirae.nvim/util"
 	"github.com/neovim/go-client/nvim"
 )
 

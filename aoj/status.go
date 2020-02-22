@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/NoahOrberg/diesirae.nvim/config"
-	"github.com/NoahOrberg/diesirae.nvim/util"
-	"github.com/h2non/gentleman"
+	"github.com/n04ln/diesirae.nvim/config"
+	"github.com/n04ln/diesirae.nvim/util"
+	"gopkg.in/h2non/gentleman.v2"
 )
 
 type errStatus struct {

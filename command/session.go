@@ -3,8 +3,8 @@ package command
 import (
 	"errors"
 
-	"github.com/NoahOrberg/diesirae.nvim/aoj"
-	"github.com/NoahOrberg/diesirae.nvim/config"
+	"github.com/n04ln/diesirae.nvim/aoj"
+	"github.com/n04ln/diesirae.nvim/config"
 	"github.com/neovim/go-client/nvim"
 )
 
