@@ -69,6 +69,7 @@ func GetDescriptionByProblemId(cookie, id string) (*Description, error) {
 	req.Method("GET")
 	req.Path("/resources/descriptions/ja/" + id)
 	req.SetHeader("Cookie", cookie)
+	req.SetHeader("Content-Type", "application/json")
 
 	res, err := req.Send()
 	if err != nil {

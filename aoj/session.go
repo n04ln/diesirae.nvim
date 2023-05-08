@@ -47,6 +47,7 @@ func IsAliveSession(cookie string) bool {
 	req.Method("GET")
 	req.Path("/self")
 	req.SetHeader("Cookie", cookie)
+	req.SetHeader("Content-Type", "application/json")
 
 	res, err := req.Send()
 	if err != nil {

@@ -158,6 +158,7 @@ func getRecentSubmissionRecords(cookie string) ([]recentSubmission, error) {
 	req.Method("GET")
 	req.Path("/submission_records/recent")
 	req.SetHeader("Cookie", cookie)
+	req.SetHeader("Content-Type", "application/json")
 
 	res, err := req.Send()
 	if err != nil {

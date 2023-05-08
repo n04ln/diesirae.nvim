@@ -183,6 +183,7 @@ func GetSampleInputOutput(problemId string) (*Samples, error) {
 	req := cli.Request()
 	req.Method("GET")
 	req.Path("/testcases/samples/" + problemId)
+	req.SetHeader("Content-Type", "application/json")
 
 	res, err := req.Send()
 	if err != nil {

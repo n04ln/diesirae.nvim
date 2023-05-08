@@ -29,6 +29,7 @@ func Submit(cookie, problemId, language, sourceCode string) (string, error) {
 	}
 	req.Use(body.JSON(data))
 	req.SetHeader("Cookie", cookie)
+	req.SetHeader("Content-Type", "application/json")
 
 	res, err := req.Send()
 	if err != nil {
